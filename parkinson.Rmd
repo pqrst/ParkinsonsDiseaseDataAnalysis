@@ -1,0 +1,107 @@
+---
+title: "Parkinson's telemonitoring"
+author: "Rushan Shakya, Tahrima Mustafa, Cam Moy, Praveen Hariharasubramanian"
+date: "April 21, 2018"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Introduction
+
+
+##Code and interpretation
+```{r}
+#Read the data file
+#parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
+parkinsons <- read.csv("/home/rusanshakya/Dropbox/Multivariate/Project/parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+str(parkinsons)
+```
+#Check null values
+```{r}
+missing <- apply(parkinsons, 2, function(x) 
+  round(100 * (length(which(is.na(x))))/length(x) , digits = 1))
+as.data.frame(missing)
+```
+There are no missing values in our dataset.
+
+#Check correlations between the variables
+```{r}
+library(corrplot)
+corrplot(cor(parkinsons), type="full", method ="color", title = "Parkinson correlatoin plot", mar=c(0,0,1,0), tl.cex= 0.8, outline= T, tl.col="indianred4")
+```
+We can see that all the jitter variables highly correlate with Shimmer variables.
+
+#Outlier detection
+```{r}
+summary(parkinsons[,-3])
+```
+
+The total_UPDRS (Unified Parkinson's Disease Ratings Score) is the main variable of interest, which determines the clinical impression of Parkinson's disease (PD) severity. Thus, we plot total_UPDRS scores agains other variables in our data set to find out outliers.
+
+```{r}
+#Scattered plot to look into data distribution
+plot(jitter(total_UPDRS)~., parkinsons)
+```
+
+In our scattered plot between total_UPDRS and Jitter, it looks like, we can see out outlier observations in our data. Similarly, in our plots with total_UPDRS vs Shimmer, total_UPDRS vs NHR, total_UPDRS vs RPDE, total_UPDRS vs DFA, and total_UPDRS vs PPE, we can see some outlier observations.
+
+We will now look into bivariate boxplots in our data to look for outlier observations in our data.
+```{r}
+library(MVA)
+#boxplots
+bvbox(parkinsons[,6:7], xlab = "total_UPDRS", ylab = "Jitter")
+text(parkinsons[,6:7], labels = rownames(parkinsons), pch=".")
+
+bvbox(parkinsons[,c(6,12)], xlab = "total_UPDRS", ylab = "Shimmer")
+text(parkinsons[,c(6,12)], labels = rownames(parkinsons), pch=".")
+
+bvbox(parkinsons[,c(6,18)], xlab = "total_UPDRS", ylab = "NHR")
+text(parkinsons[,c(6,18)], labels = rownames(parkinsons), pch=".")
+
+bvbox(parkinsons[,c(6,20)], xlab = "total_UPDRS", ylab = "RPDE")
+text(parkinsons[,c(6,20)], labels = rownames(parkinsons), pch=".")
+
+bvbox(parkinsons[,c(6,21)], xlab = "total_UPDRS", ylab = "DFA")
+text(parkinsons[,c(6,21)], labels = rownames(parkinsons), pch=".")
+
+bvbox(parkinsons[,c(6,22)], xlab = "total_UPDRS", ylab = "PPE")
+text(parkinsons[,c(6,22)], labels = rownames(parkinsons), pch=".")
+```
+The bivariate boxplot is showing a lot of our observations as outliers. Thus, we want to check our results with Convex Hull method as we don't want to change the distribution of our data by removing the outliers.
+
+```{r}
+#Convex hull method
+hull1 <- chull(parkinsons[,6:7])
+plot(parkinsons[,6:7], xlab = "total_UPDRS", ylab = "Jitter")
+polygon(parkinsons$Jitter...[hull1]~parkinsons$total_UPDRS[hull1])
+text(parkinsons[,6:7], labels = rownames(parkinsons), pch=".", cex = 0.7)
+```
+
+```{r}
+#Removing outlier observations according to Convex hull
+outlier <- parkinsons[-hull1,]
+dim(outlier)
+dim(parkinsons)
+
+hull2 <- chull(outlier[,c(6,12)])
+parkinsons <- outlier[-hull2,]
+
+hull3 <- chull(parkinsons[,c(6,18)])
+outlier <- parkinsons[-hull3,]
+
+hull4 <- chull(outlier[,c(6,20)])
+parkinsons <- outlier[-hull4,]
+
+hull5 <- chull(parkinsons[,c(6,21)])
+outlier <- parkinsons[-hull5,]
+
+hull6 <- chull(outlier[,c(6,22)])
+parkinsons <- outlier[-hull6,]
+
+dim(parkinsons)
+```
+
+
