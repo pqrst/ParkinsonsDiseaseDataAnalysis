@@ -10,13 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ##Introduction
-
+Goal of this project is to identify most significant measures that can help in measuring progression of parkinson's disease so that measurements from devices can be used to diagnose and treat a patient without personal physician diagnosis requirements.
 
 ##Code and interpretation
 ```{r}
 #Read the data file
 #parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
-parkinsons <- read.csv("/home/rusanshakya/Dropbox/Multivariate/Project/parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
 str(parkinsons)
 ```
 #Check null values
@@ -39,7 +39,7 @@ We can see that all the jitter variables highly correlate with Shimmer variables
 summary(parkinsons[,-3])
 ```
 
-The total_UPDRS (Unified Parkinson's Disease Ratings Score) is the main variable of interest, which determines the clinical impression of Parkinson's disease (PD) severity. Thus, we plot total_UPDRS scores agains other variables in our data set to find out outliers.
+The total_UPDRS (Unified Parkinson's Disease Ratings Score) is the main variable of interest, which determines the clinical impression of Parkinson's disease (PD) severity. Thus, we plot total_UPDRS scores against other variables in our data set to find out outliers.
 
 ```{r}
 #Scattered plot to look into data distribution
@@ -92,16 +92,148 @@ parkinsons <- outlier[-hull2,]
 hull3 <- chull(parkinsons[,c(6,18)])
 outlier <- parkinsons[-hull3,]
 
-hull4 <- chull(outlier[,c(6,20)])
+hull4 <- chull(parkinsons[,c(6,20)])
 parkinsons <- outlier[-hull4,]
 
 hull5 <- chull(parkinsons[,c(6,21)])
 outlier <- parkinsons[-hull5,]
 
-hull6 <- chull(outlier[,c(6,22)])
+hull6 <- chull(parkinsons[,c(6,22)])
 parkinsons <- outlier[-hull6,]
 
 dim(parkinsons)
 ```
 
+```{r}
+parkcorr <- cor(parkinsons)
+colnames(parkcorr) <- row.names(parkcorr) <- parklabs <- c(colnames(parkinsons))
+rge <- sapply(parkinsons, function(x) diff(range(x)))
+sparkinsons <- sweep(parkinsons, 2, rge, FUN = "/")
+parkdist <- dist(sparkinsons)
+parkdist_mds <- cmdscale(parkdist, k = 21, eig = TRUE)
+parkdistpoints <- parkdist_mds$points
+lam <- parkdist_mds$eig
+criterion1 <- cumsum(abs(lam)) / sum(abs(lam))
+criterion2 <- cumsum(lam^2) / sum(lam^2)
+#criterion 2 suggests that the first two coordinates are required to represent majority of the data points since the cummulative proportion is 0.78 and close to the threshold value of 0.8 
+#hence the MDS plot can be on a 2D scatterplot
+x <- parkdist_mds$points[,1]
+y <- parkdist_mds$points[,2]
+plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2", main="Parkinsons MDS",pch=20,cex=0.1)
+text(x, y, labels = parkinsons[,3], cex=0.8)
+#the MDS plot clearly shows that age is creating a deviation between the datasets with female on the right and male on the left
+#this significant deviation is because the voice pictch, frequency and amplitude totally differs by being in different ranges for different genders
+```
+
+```{r}
+parkcorr <- cor(parkinsons)
+colnames(parkcorr) <- row.names(parkcorr) <- parklabs <- c(colnames(parkinsons))
+rge <- sapply(parkinsons, function(x) diff(range(x)))
+sparkinsons <- sweep(parkinsons, 2, rge, FUN = "/")
+parkdist <- dist(parkcorr)
+parkdist_mds <- cmdscale(parkdist, k = 21, eig = TRUE)
+parkdistpoints <- parkdist_mds$points
+lam <- parkdist_mds$eig
+criterion1 <- cumsum(abs(lam)) / sum(abs(lam))
+criterion2 <- cumsum(lam^2) / sum(lam^2)
+#criterion 1 and criterion 2 suggests that the first two coordinates can represents majority of the data points since the cummulative proportion is above the threshold value of 0.8 
+#hence the MDS plot can be on a 2D scatterplot
+x <- parkdist_mds$points[,1]
+y <- parkdist_mds$points[,2]
+plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2", main="Parkinsons MDS",pch=20,cex=0.1)
+text(x, y, labels = colnames(parkcorr), cex=0.8)
+```
+
+The statitical technique of multi dimensional scaling through this plot has confirmed that attributes form groups with similar patterns
+1. All jitter variables follow a pattern
+2. All Shimmer variables follow a patter
+3. PPE and NHR form a pattern
+4. total UPDRS and motor UPDRS form a pattern
+5. test time and sex form a pattern
+6. Age contributes as a seperate attribute to the variation in data
+7. HNR contributes as a seperate attribute to the variation in data
+
+These findings can be logically understood as
+1. Jitter is related to frequency measure so they form a pattern and it is logically valid
+2. Shimmer is related to amplitude measure so they form a pattern and it is logically valid
+3. Pitch of voice cord and noise to harmonics ratio are having an underlying relationship and that is observable through this finding
+4. Motor UPDRS score is impacting the total score and it makes sense
+5. Test time and sex are two independent factors and they are showing correlation by coincidence and this inference can be ignored
+6. Age contributes as a seperate attribute to the variation in data
+7. HNR contributes as a seperate attribute to the variation in data
+
+To confirm that the observations in the multi dimensional scaling can be used to better identify patients with disease and ideal measures to estimate progression of the disease and interpret the similarity between cetain measures let us apply another technique called random forests algorithm that uses gini index which is another way of measuring dissimilarity in the data like multi dimensional scaling.
+
+Random forest helps in measuring and identifying the correct measure that can aid in differentiating the data and better differentiate patients and ranking the different variables by there contribution to the variance of the dataset and also on their significance in measuring progression of the disease.
+
+```{r}
+library(randomForest)
+#scaling the data
+rge <- sapply(parkinsons, function(x) diff(range(x)))
+sparkinsons <- sweep(parkinsons, 2, rge, FUN = "/")
+# Create the forest.
+output.forest <- randomForest(sparkinsons$total_UPDRS~age+sex+test_time+Jitter...+Jitter.Abs.+Jitter.RAP+Jitter.PPQ5+Jitter.DDP+Shimmer+Shimmer.dB.+Shimmer.APQ3+Shimmer.APQ5+Shimmer.APQ11+Shimmer.DDA+NHR+HNR+RPDE+DFA+PPE, data = sparkinsons,mtry = 6)
+
+# View the forest results.
+print(output.forest) 
+
+# Importance of each predictor.
+impfactors <- importance(output.forest,type = 2)
+impfactors <- data.frame(impfactors)
+impfactorsranked <- impfactors[order(-impfactors$IncNodePurity),,drop=FALSE]
+print(impfactorsranked)
+#On applying random forest we can observe that certain attributes contribute higher to the split in the dataset i.e. certain observations help better in categorising patients based on UPDRS scores and contribute higher to disease progression or severity
+#motor UPDRS ignored since its a subset of total UPDRS
+#subject id ignored since its the id of each patient
+#These attributes are
+#Age - Subject age
+#Sex - Subject gender '0' - male, '1' - female
+#test_time - Time since recruitment into the trial. The integer part is the number of days since recruitment.
+#HNR - Harmonics to noise ratio (HNR) quantify the ratio of actual signal information over noise
+#RPDE - Recurrence Period Density Entropy (RPDE) Quantify the stochastic component of the deviation of vocal fold periodicity. Vocal fold periodicity is the periodicity/frequency of vibration of the vocal cord
+#DFA - Detrended Fluctuation Analysis (DFA) Quantify the stochastic self-similarity of the noise caused by turbulent airflow
+#PPE - Pitch Period Entropy (PPE). In speech disorders it is very difficult to sustain stable pitch due to incomplete vocal fold closure. PPE quantifies the impaired control of stabilized pitch
+#Jitter(Abs) - Jitter absolute is the average absolute difference between consecutive periods, divided by the average period in fundamental frequency
+```
+
+Random forest has helped in indentifying the top factors that influence the disease progression and that are DFA, Age, JItter.Abs.,Sex, PPE, HNR, RPDE and test_time.
+
+Age - Subject age
+
+Sex - Subject gender '0' - male, '1' - female
+
+test_time - Time since recruitment into the trial. The integer part is the number of days since recruitment.
+
+Jitter (%) - Mean absolute difference of successive cycles divided by the mean of Fundamental frequency (expressed in percentage)
+
+Shimmer - Average absolute difference between the amplitudes of consecutive periods, divided by the average amplitude.
+
+NHR - Noise to harmonics ratio (NHR) quantify the ratio of actual signal information over noise
+
+HNR - Harmonics to noise ratio (HNR) quantify the ratio of actual signal information over noise
+
+RPDE - Recurrence Period Density Entropy (RPDE) Quantify the stochastic component of the deviation of vocal fold periodicity. Vocal fold periodicity is the periodicity/frequency of vibration of the vocal cord
+
+DFA - Detrended Fluctuation Analysis (DFA) Quantify the stochastic self-similarity of the noise caused by turbulent airflow
+
+PPE - Pitch Period Entropy (PPE). In speech disorders it is very difficult to sustain stable pitch due to incomplete vocal fold closure. PPE quantifies the impaired control of stabilized pitch
+
+```{r}
+library(sem)
+library(semPlot)
+parkinsonscov<- cor(parkinsons[,c(-1)])
+parkinson_model <- specifyModel(file = "C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinson_sem_model.txt")
+opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
+parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
+summary(parkinson_sem)
+# restricted Cor matrix
+rescor <- parkinson_sem$C
+# non-restricted Cor matrix
+nonrescor <- parkinson_sem$S
+
+#differences of the elements of the observed covariance matrix and the covariance matrix of the fitted model
+covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
+
+semPaths(parkinson_sem, "est")
+```
 
