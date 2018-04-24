@@ -2,7 +2,9 @@
 title: "Parkinson's telemonitoring"
 author: "Rushan Shakya, Tahrima Mustafa, Cam Moy, Praveen Hariharasubramanian"
 date: "April 21, 2018"
-output: word_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -15,9 +17,8 @@ Goal of this project is to identify most significant measures that can help in m
 ##Code and interpretation
 ```{r}
 #Read the data file
-parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
-#parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
-#parkinsons <- read.csv("C:\\c\\Rawls\\spring18\\MVA\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+#parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
+parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
 str(parkinsons)
 ```
 #Check null values
@@ -54,31 +55,31 @@ We will now look into bivariate boxplots in our data to look for outlier observa
 library(MVA)
 #boxplots
 bvbox(parkinsons[,6:7], xlab = "total_UPDRS", ylab = "Jitter")
-text(parkinsons[,6:7], labels = rownames(parkinsons), pch=".")
 
 bvbox(parkinsons[,c(6,12)], xlab = "total_UPDRS", ylab = "Shimmer")
-text(parkinsons[,c(6,12)], labels = rownames(parkinsons), pch=".")
 
 bvbox(parkinsons[,c(6,18)], xlab = "total_UPDRS", ylab = "NHR")
-text(parkinsons[,c(6,18)], labels = rownames(parkinsons), pch=".")
 
 bvbox(parkinsons[,c(6,20)], xlab = "total_UPDRS", ylab = "RPDE")
-text(parkinsons[,c(6,20)], labels = rownames(parkinsons), pch=".")
 
 bvbox(parkinsons[,c(6,21)], xlab = "total_UPDRS", ylab = "DFA")
-text(parkinsons[,c(6,21)], labels = rownames(parkinsons), pch=".")
 
 bvbox(parkinsons[,c(6,22)], xlab = "total_UPDRS", ylab = "PPE")
-text(parkinsons[,c(6,22)], labels = rownames(parkinsons), pch=".")
 ```
 The bivariate boxplot is showing a lot of our observations as outliers. Thus, we want to check our results with Convex Hull method as we don't want to change the distribution of our data by removing the outliers.
 
 ```{r}
 #Convex hull method
+
 hull1 <- chull(parkinsons[,6:7])
+
+parkhull <- match(lab <- rownames(parkinsons[hull1,])
+, rownames(parkinsons))
+
 plot(parkinsons[,6:7], xlab = "total_UPDRS", ylab = "Jitter")
 polygon(parkinsons$Jitter...[hull1]~parkinsons$total_UPDRS[hull1])
-text(parkinsons[,6:7], labels = rownames(parkinsons), pch=".", cex = 0.7)
+text(parkinsons[parkhull,6:7], labels = lab
+, pch=".", cex = 0.9)
 ```
 
 ```{r}
@@ -105,43 +106,76 @@ parkinsons <- outlier[-hull6,]
 dim(parkinsons)
 ```
 
+Principal Componenets Analysis
+
 ```{r}
-# correlations of the variables
-parkcorr <- cor(parkinsons)
-# adding row and column names in the correlation matrix
-colnames(parkcorr) <- row.names(parkcorr) <- parklabs <- c(colnames(parkinsons))
-# calculating range of all the variables 
-rge <- sapply(parkinsons, function(x) diff(range(x)))
+#PCA
+library(stats)
+#outliers have alreaady been removed so PCA does not requiere any changes in the data
+#standard deviations of data set
+p_sd <- sd(is.numeric(parkinsons))
+# creating covariance matrix for entire dataset
+p_cov <- cov(parkinsons, use = "everything")
+#creating correlation matrix for the entire dataset
+p_corr <-cor(parkinsons, use = "everything")
 
-sparkinsons <- sweep(parkinsons, 2, rge, FUN = "/")
+#Principal Components Analysis for correlation matrix
+# we have chosen to utilize the correlation matrix for the PCA since the variables have different scales and variances
+parkinsons_pca_corr <- princomp(covmat = p_corr)
+summary(parkinsons_pca_corr, loadings = T)
 
-parkdist <- dist(sparkinsons)
-# mds 
-parkdist_mds <- cmdscale(parkdist, k = 21, eig = TRUE)
 
-parkdistpoints <- parkdist_mds$points
-
-lam <- parkdist_mds$eig
-
-criterion1 <- cumsum(abs(lam)) / sum(abs(lam))
-criterion2 <- cumsum(lam^2) / sum(lam^2)
-
-head(criterion1)
-head(criterion2)
 ```
 
-Criterion 2 suggests that the first two coordinates are required to represent majority of the data points since the cummulative proportion is 0.78 and close to the threshold value of 0.8. Hence the MDS plot can be on a 2D scatterplot.
+#covariance matrix interpretation
 
+All of the variables showcase small magnitudes which can have positive or negative linear releationships.
+ 
+#correlation matrix interpretation
+
+From the correlation matrix we have observatins:
+
+* Variable HNR which is the ratio of noise to tonal components in the voice. This variable has an inverse releationship with all the variables.
+
+* Variables containing the word "Shimmer" have high positive correlation values with each other.
+
+* Variables containing the word "Jitter" have high positive correlation values with each other
+
+* High correlation values between variables containing the word Shimer with variables containing the word "Jitter"
+
+* The PPE variable represents a nonlinear measure of fundamental frequency variation. This variable has strong positive correlations with varaibles containing the word "jitters" or "Shimmers" and the variable RPDE. RPDE represents a nonlinear dynamical complexity measure.
+
+* "total_UPDRS" and "motor_UPDRS" showcase a strong positive correlation. Where, "total_UPDRS" represents clinician's total UPDRS score  and "motor_UPDRS"  the clinician's motor UPDRS score both, linearly interpolated. 
+
+ 
+# PCA interpretation
+ 
+* The amount of components was determined according to the following rule. The total amount of variation that the components represent must be within 70% to 90%.
+
+*According to this parameter components 1 through 4 where selected. These components amount to a total of 76% of the total variation.
+
+#Multi dimensional scaling
 
 ```{r}
+parkcorr <- cor(parkinsons)
+colnames(parkcorr) <- row.names(parkcorr) <- parklabs <- c(colnames(parkinsons))
+rge <- sapply(parkinsons, function(x) diff(range(x)))
+sparkinsons <- sweep(parkinsons, 2, rge, FUN = "/")
+parkdist <- dist(sparkinsons)
+parkdist_mds <- cmdscale(parkdist, k = 21, eig = TRUE)
+parkdistpoints <- parkdist_mds$points
+lam <- parkdist_mds$eig
+criterion1 <- cumsum(abs(lam)) / sum(abs(lam))
+criterion2 <- cumsum(lam^2) / sum(lam^2)
+#criterion 2 suggests that the first two coordinates are required to represent majority of the data points since the cummulative proportion is 0.78 and close to the threshold value of 0.8 
+#hence the MDS plot can be on a 2D scatterplot
 x <- parkdist_mds$points[,1]
 y <- parkdist_mds$points[,2]
 plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2", main="Parkinsons MDS",pch=20,cex=0.1)
 text(x, y, labels = parkinsons[,3], cex=0.8)
+#the MDS plot clearly shows that age is creating a deviation between the datasets with female on the right and male on the left
+#this significant deviation is because the voice pictch, frequency and amplitude totally differs by being in different ranges for different genders
 ```
-
-The MDS plot clearly shows that age is creating a deviation between the datasets with female on the right and male on the left. This significant deviation is because the voice pitch, frequency and amplitude totally differs by being in different ranges for different genders. 
-
 
 ```{r}
 parkcorr <- cor(parkinsons)
@@ -164,7 +198,7 @@ text(x, y, labels = colnames(parkcorr), cex=0.8)
 
 The statitical technique of multi dimensional scaling through this plot has confirmed that attributes form groups with similar patterns
 1. All jitter variables follow a pattern
-2. All Shimmer variables follow a pattern
+2. All Shimmer variables follow a patter
 3. PPE and NHR form a pattern
 4. total UPDRS and motor UPDRS form a pattern
 5. test time and sex form a pattern
@@ -182,7 +216,7 @@ These findings can be logically understood as
 
 To confirm that the observations in the multi dimensional scaling can be used to better identify patients with disease and ideal measures to estimate progression of the disease and interpret the similarity between cetain measures let us apply another technique called random forests algorithm that uses gini index which is another way of measuring dissimilarity in the data like multi dimensional scaling.
 
-Random forest helps in measuring and identifying the correct measure that can aid in differentiating the data and better differentiate patients and ranking the different variables by their contribution to the variance of the dataset and also on their significance in measuring progression of the disease.
+Random forest helps in measuring and identifying the correct measure that can aid in differentiating the data and better differentiate patients and ranking the different variables by there contribution to the variance of the dataset and also on their significance in measuring progression of the disease.
 
 ```{r}
 library(randomForest)
@@ -224,10 +258,6 @@ test_time - Time since recruitment into the trial. The integer part is the numbe
 
 Jitter (%) - Mean absolute difference of successive cycles divided by the mean of Fundamental frequency (expressed in percentage)
 
-Shimmer - Average absolute difference between the amplitudes of consecutive periods, divided by the average amplitude.
-
-NHR - Noise to harmonics ratio (NHR) quantify the ratio of actual signal information over noise
-
 HNR - Harmonics to noise ratio (HNR) quantify the ratio of actual signal information over noise
 
 RPDE - Recurrence Period Density Entropy (RPDE) Quantify the stochastic component of the deviation of vocal fold periodicity. Vocal fold periodicity is the periodicity/frequency of vibration of the vocal cord
@@ -236,35 +266,34 @@ DFA - Detrended Fluctuation Analysis (DFA) Quantify the stochastic self-similari
 
 PPE - Pitch Period Entropy (PPE). In speech disorders it is very difficult to sustain stable pitch due to incomplete vocal fold closure. PPE quantifies the impaired control of stabilized pitch
 
-
+#Exploratory factor analysis
 ```{r}
 library(MVA)
 options(digits = 3)
 # EFA
-#head(parkinsons) #2:4,8,16,18:22
-parkinson.EFA <- factanal(parkinsons[, c(2:5,8,16,18:22)], 5, n.obs = nrow(parkinsons), rotation="promax", 
-                          scores = "regression")
+head(parkinsons) #2:4,8,16,18:22
+parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 5, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
 parkinson.EFA
-print(parkinson.EFA$loadings, cut = 0.4)
-head(parkinson.EFA$scores)
+print(parkinson.EFA$loadings, cut = 0.5)
 ```
 
 First, when we try to do exploratory factor analysis with all the variables, the model doesn't run. After some research we have come to the conclusion that due to high multicolinearity between some variables, the algorithm is not converging. So we decided to reduce the values that have high correlation between them. From the correlation plot we can see that jitter and shimmer variables have high correlation (0.9+) between themselves. So we tried building the model with one jitter and one shimmer variable. From the random forest analysis, we saw that Jitter.Abs. and Shimmer.APQ11 have highest significance in their corresponding frequency and amplitude groups. So we took these 2 variables in the exploratory factor analysis. Also both the updrs variables have 0.9+ correlation between them. So we took one from that group too.
 
-With the above mentioned variables we explored different number of factors. But if we take 2 or 3 factors then only 40-45% data is explained. Also the age, sex and test_time have very small factor coefficient and large (0.85+) uniqueness. If we have 5/6 factors then the uniqueness of these variables lessen but still they are greater than 0.7. 
-
+With the above mentioned variables we explored different number of factors. But if we take 2 or 3 factors then only 40-45% data is explained. Also the age, sex and test_time have very small factor coefficient and large (0.85+) uniqueness. If we have 5/6 factors then the uniqueness of these variables lessen but still they are greater than 0.7.
 
 ```{r}
+parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 2, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
+parkinson.EFA
+print(parkinson.EFA$loadings, cut = 0.5)
+
+#Implementing Confirmatory actor analysis from the observed factors in the exploratory factor analysis
+
 library(sem)
 library(semPlot)
-#cov matrix
-parkinsonscov<- cor(parkinsons[,c(2,3,5,8,16,18:22)]) #8,16,19,20,21,22
-#model 
-parkinson_CFA <- specifyModel(file = "C:\\ttu\\spring18\\MVA\\project\\parkinson_sem_model.txt")
-
+parkinsonscov<- cor(parkinsons[,-c(1)])
+parkinson_model <- specifyModel(file = "C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinson_sem_model_efa2.txt")
 opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
-
-parkinson_sem <- sem(parkinson_CFA, parkinsonscov, nrow(parkinsons))
+parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
 summary(parkinson_sem)
 # restricted Cor matrix
 rescor <- parkinson_sem$C
@@ -274,11 +303,26 @@ nonrescor <- parkinson_sem$S
 #differences of the elements of the observed covariance matrix and the covariance matrix of the fitted model
 covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
 
-semPaths(parkinson_sem, "est")
+semPaths(parkinson_sem, "est",edge.label.cex=1.5)
+
 ```
 
+```{r}
+library(sem)
+library(semPlot)
+parkinsonscov<- cor(parkinsons[,-c(1)])
+parkinson_model <- specifyModel(file = "C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinson_sem_model_efa1.txt")
+opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
+parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
+summary(parkinson_sem)
+# restricted Cor matrix
+rescor <- parkinson_sem$C
+# non-restricted Cor matrix
+nonrescor <- parkinson_sem$S
 
+#differences of the elements of the observed covariance matrix and the covariance matrix of the fitted model
+covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
 
-
-
+semPaths(parkinson_sem, "est",edge.label.cex=1.5)
+```
 

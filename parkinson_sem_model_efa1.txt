@@ -1,0 +1,15 @@
+frequency -> Jitter.Abs., lambda1, NA
+frequency -> DFA, lambda2, NA
+frequency -> PPE, lambda3, NA
+amplitude -> Shimmer.APQ11, lambda4, NA
+amplitude -> HNR, lambda5, NA
+amplitude -> RPDE, lambda6, NA
+frequency <-> amplitude, corr1, NA
+Jitter.Abs. <-> Jitter.Abs., theta1, NA
+DFA <-> DFA, theta2, NA
+PPE <-> PPE, theta3, NA
+Shimmer.APQ11 <-> Shimmer.APQ11, theta4, NA
+HNR <-> HNR, theta5, NA
+RPDE <-> RPDE, theta6, NA
+frequency <-> frequency, NA, 1
+amplitude <-> amplitude, NA, 1
