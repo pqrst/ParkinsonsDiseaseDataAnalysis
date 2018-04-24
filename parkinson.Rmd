@@ -15,8 +15,9 @@ Goal of this project is to identify most significant measures that can help in m
 ##Code and interpretation
 ```{r}
 #Read the data file
-#parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
-parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
+#parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+#parkinsons <- read.csv("C:\\c\\Rawls\\spring18\\MVA\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
 str(parkinsons)
 ```
 #Check null values
@@ -105,25 +106,42 @@ dim(parkinsons)
 ```
 
 ```{r}
+# correlations of the variables
 parkcorr <- cor(parkinsons)
+# adding row and column names in the correlation matrix
 colnames(parkcorr) <- row.names(parkcorr) <- parklabs <- c(colnames(parkinsons))
+# calculating range of all the variables 
 rge <- sapply(parkinsons, function(x) diff(range(x)))
+
 sparkinsons <- sweep(parkinsons, 2, rge, FUN = "/")
+
 parkdist <- dist(sparkinsons)
+# mds 
 parkdist_mds <- cmdscale(parkdist, k = 21, eig = TRUE)
+
 parkdistpoints <- parkdist_mds$points
+
 lam <- parkdist_mds$eig
+
 criterion1 <- cumsum(abs(lam)) / sum(abs(lam))
 criterion2 <- cumsum(lam^2) / sum(lam^2)
-#criterion 2 suggests that the first two coordinates are required to represent majority of the data points since the cummulative proportion is 0.78 and close to the threshold value of 0.8 
-#hence the MDS plot can be on a 2D scatterplot
+
+head(criterion1)
+head(criterion2)
+```
+
+Criterion 2 suggests that the first two coordinates are required to represent majority of the data points since the cummulative proportion is 0.78 and close to the threshold value of 0.8. Hence the MDS plot can be on a 2D scatterplot.
+
+
+```{r}
 x <- parkdist_mds$points[,1]
 y <- parkdist_mds$points[,2]
 plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2", main="Parkinsons MDS",pch=20,cex=0.1)
 text(x, y, labels = parkinsons[,3], cex=0.8)
-#the MDS plot clearly shows that age is creating a deviation between the datasets with female on the right and male on the left
-#this significant deviation is because the voice pictch, frequency and amplitude totally differs by being in different ranges for different genders
 ```
+
+The MDS plot clearly shows that age is creating a deviation between the datasets with female on the right and male on the left. This significant deviation is because the voice pitch, frequency and amplitude totally differs by being in different ranges for different genders. 
+
 
 ```{r}
 parkcorr <- cor(parkinsons)
@@ -146,7 +164,7 @@ text(x, y, labels = colnames(parkcorr), cex=0.8)
 
 The statitical technique of multi dimensional scaling through this plot has confirmed that attributes form groups with similar patterns
 1. All jitter variables follow a pattern
-2. All Shimmer variables follow a patter
+2. All Shimmer variables follow a pattern
 3. PPE and NHR form a pattern
 4. total UPDRS and motor UPDRS form a pattern
 5. test time and sex form a pattern
@@ -164,7 +182,7 @@ These findings can be logically understood as
 
 To confirm that the observations in the multi dimensional scaling can be used to better identify patients with disease and ideal measures to estimate progression of the disease and interpret the similarity between cetain measures let us apply another technique called random forests algorithm that uses gini index which is another way of measuring dissimilarity in the data like multi dimensional scaling.
 
-Random forest helps in measuring and identifying the correct measure that can aid in differentiating the data and better differentiate patients and ranking the different variables by there contribution to the variance of the dataset and also on their significance in measuring progression of the disease.
+Random forest helps in measuring and identifying the correct measure that can aid in differentiating the data and better differentiate patients and ranking the different variables by their contribution to the variance of the dataset and also on their significance in measuring progression of the disease.
 
 ```{r}
 library(randomForest)
@@ -222,7 +240,7 @@ PPE - Pitch Period Entropy (PPE). In speech disorders it is very difficult to su
 library(sem)
 library(semPlot)
 parkinsonscov<- cor(parkinsons[,c(-1)])
-parkinson_model <- specifyModel(file = "C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinson_sem_model.txt")
+parkinson_model <- specifyModel(file = "C:\\c\\Rawls\\spring18\\MVA\\project\\parkinson_sem_model.txt")
 opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
 parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
 summary(parkinson_sem)
@@ -235,5 +253,15 @@ nonrescor <- parkinson_sem$S
 covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
 
 semPaths(parkinson_sem, "est")
+```
+
+```{r}
+library(MVA)
+options(digits = 3)
+# EFA
+head(parkinsons) #2:4,8,16,18:22
+parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 5, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
+parkinson.EFA
+print(parkinson.EFA$loadings, cut = 0.5)
 ```
 
