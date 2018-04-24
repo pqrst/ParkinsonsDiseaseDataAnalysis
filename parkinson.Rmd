@@ -260,8 +260,10 @@ library(MVA)
 options(digits = 3)
 # EFA
 head(parkinsons) #2:4,8,16,18:22
-parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 5, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
+parkinson.EFA <- factanal(parkinsons[, c(2:11,15:22)], 4, n.obs = nrow(parkinsons), rotation="varimax", 
+                          scores = "regression")
 parkinson.EFA
 print(parkinson.EFA$loadings, cut = 0.5)
+head(parkinson.EFA$scores)
 ```
 
