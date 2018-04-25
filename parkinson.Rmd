@@ -3,6 +3,7 @@ title: "Parkinson's telemonitoring"
 author: "Rushan Shakya, Tahrima Mustafa, Cam Moy, Praveen Hariharasubramanian"
 date: "April 21, 2018"
 output:
+  word_document: default
   html_document:
     df_print: paged
 ---
@@ -11,17 +12,64 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Introduction
-Goal of this project is to identify most significant measures that can help in measuring progression of parkinson's disease so that measurements from devices can be used to diagnose and treat a patient without personal physician diagnosis requirements.
+#Introduction: 
 
-##Code and interpretation
+###Description and literature:
+
+Parkinson's disease is a neurodegenerative disorder of central nervous system that causes partial or full loss of motor reflexes, speech, behavior, mental processing, and other vital functions [1]. It is generally observed in elderly people and causes disorders in speech and motor abilities (writing, balance, etc.) of 90% of the patients [2]. Ensuing Alzheimer, PD is the second common neurological health problem in elder ages and it is estimated that nearly 10 million people all around the world and approximately 100k people in Turkey are suffering from this disease [3], [4]. Particularly, PD is generally seen in one out of every hundred people aged over 65. Currently, there is no known cure for the disease [5], [6]. Although, there is significant amount of drug therapies to decrease difficulties caused by the disorder, PD is usually diagnosed and treated using invasive methods [7]. Therefore, this complicates the process of diagnosis and treatment of patients who are grieving from the disease. Our main motivation for working with this dataset is to find significant variables in identifying patients suffering from Parkinson's disease with the means of multivariate analysis. 
+
+In this study, we will analyze the patients' data who are diagnosed with the disease. Using speech data from subjects is expected to help the development of a noninvasive diagnostic. There are important examples of these kinds of Alzheimer and PD studies all around the world [8]. The studies based on the PD focus on symptoms like slowness in movement, poor balance, trembling, or stiffness of some body parts but especially voice problems. The main reason behind the popularity of PD diagnosis from speech impairments is that tele-diagnosis and tele-monitoring systems based on speech signals are low in cost and easy to self-use [6], [8]. Such systems lower the inconvenience and cost of physical visits of PD patients to the medical clinic, enable the early diagnosis of the disease, and also lessen the workload of medical personnel [7], [8]. People with Parkinsonism (PWP) suffer from speech impairments like dysphonia (defective use of the voice), hypophonia (reduced volume), monotone (reduced pitch range), and dysarthria (difficulty with articulation of sounds or syllables). Even though there are many studies aiming at diagnosing and monitoring PD using these impairments, the origin of these studies leans to diagnose basic voice disorders [8]. Therefore, our analysis in this project will be based on voice parameters of the affected. The following section will illustrate a short description of the dataset formation and how we are planning to approach the problem. 
+
+###Data:
+
+The dataset was created by Athanasios Tsanas and Max Little of the University of Oxford, in collaboration with 10 medical centers in the US and Intel Corporation who developed the tele-monitoring device to record the speech signals. The original study [9] used a range of linear and nonlinear regression methods to predict the clinician's Parkinson's disease symptom score on the UPDRS scale.
+
+This dataset is composed of a range of biomedical voice measurements from 42 people with early-stage Parkinson's disease recruited to a six-month trial of a tele-monitoring device for remote symptom progression monitoring. The recordings were automatically captured in the patient's homes.
+
+Columns in the dataset contain subject number, subject age, subject gender, time interval from baseline recruitment date, motor UPDRS, total UPDRS, and 16 biomedical voice measures. Each row corresponds to one of 5,875 voice recording from these individuals. 
+
+The main aim of the data is to predict the motor and total UPDRS scores ('motor_UPDRS' and 'total_UPDRS') from the 16 voice measures.
+
+The data is in ASCII CSV format. The rows of the CSV file contain an instance corresponding to one voice recording. There are around 200 recordings per patient, the subject number of the patient is identified in the first column [10], [11]. 
+
+### Attribute Information: 
+
+Subject: Integer that uniquely identifies each subject
+
+Age: Subject age
+
+Sex: Subject gender '0' - male, '1' - female
+
+Test_time: Time since recruitment into the trial. The integer part is the number of days since recruitment
+
+Motor_UPDRS: Clinician's motor UPDRS score, linearly interpolated
+
+Total_UPDRS: Clinician's total UPDRS score, linearly interpolated
+
+Jitter (%), Jitter(Abs), Jitter. RAP, Jitter. PPQ5, Jitter. DDP:	Several measures of variation in fundamental frequency (Frequency parameters)
+
+Shimmer, Shimmer (dB), Shimmer. APQ3, Shimmer. APQ5, Shimmer. APQ11, Shimmer. DDA:	Several measures of variation in amplitude (Amplitude parameters)
+
+NHR, HNR: Two measures of ratio of noise to tonal components in the voice
+
+RPDE: A nonlinear dynamical complexity measure
+
+DFA: Signal fractal scaling exponent
+
+PPE: A nonlinear measure of fundamental frequency variation
+
+### Data Cleaning and Outlier Removal:
+
+Our first step is going through the dataset and identify any missing value or outlier to take necessary measures. This step is essential to prepare the data for fruitful analysis.
+
+####Code and interpretation
 ```{r}
 #Read the data file
-#parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
-parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
+#parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
 str(parkinsons)
 ```
-#Check null values
+####Check null values
 ```{r}
 missing <- apply(parkinsons, 2, function(x) 
   round(100 * (length(which(is.na(x))))/length(x) , digits = 1))
@@ -29,14 +77,14 @@ as.data.frame(missing)
 ```
 There are no missing values in our dataset.
 
-#Check correlations between the variables
+####Check correlations between the variables
 ```{r}
 library(corrplot)
 corrplot(cor(parkinsons), type="full", method ="color", title = "Parkinson correlatoin plot", mar=c(0,0,1,0), tl.cex= 0.8, outline= T, tl.col="indianred4")
 ```
 We can see that all the jitter variables highly correlate with Shimmer variables.
 
-#Outlier detection
+####Outlier detection
 ```{r}
 summary(parkinsons[,-3])
 ```
@@ -106,57 +154,16 @@ parkinsons <- outlier[-hull6,]
 dim(parkinsons)
 ```
 
-Principal Componenets Analysis
+###Dimensionality Reduction: 
+
+Our next step is dimensionality reduction. The dataset is very large with 22 variables and some of the variables have high correlations between them. So we are expecting to reduce the number of dimensions for better interpretation of the data. 
+
+#### Multi-dimensional scaling
+
+First we try Multi-dimensional scaling which can help us visualizing the variable relationships in 2D graphs. 
 
 ```{r}
-#PCA
-library(stats)
-#outliers have alreaady been removed so PCA does not requiere any changes in the data
-#standard deviations of data set
-p_sd <- sd(is.numeric(parkinsons))
-# creating covariance matrix for entire dataset
-p_cov <- cov(parkinsons, use = "everything")
-#creating correlation matrix for the entire dataset
-p_corr <-cor(parkinsons, use = "everything")
-
-#Principal Components Analysis for correlation matrix
-# we have chosen to utilize the correlation matrix for the PCA since the variables have different scales and variances
-parkinsons_pca_corr <- princomp(covmat = p_corr)
-summary(parkinsons_pca_corr, loadings = T)
-
-
-```
-
-#covariance matrix interpretation
-
-All of the variables showcase small magnitudes which can have positive or negative linear releationships.
- 
-#correlation matrix interpretation
-
-From the correlation matrix we have observatins:
-
-* Variable HNR which is the ratio of noise to tonal components in the voice. This variable has an inverse releationship with all the variables.
-
-* Variables containing the word "Shimmer" have high positive correlation values with each other.
-
-* Variables containing the word "Jitter" have high positive correlation values with each other
-
-* High correlation values between variables containing the word Shimer with variables containing the word "Jitter"
-
-* The PPE variable represents a nonlinear measure of fundamental frequency variation. This variable has strong positive correlations with varaibles containing the word "jitters" or "Shimmers" and the variable RPDE. RPDE represents a nonlinear dynamical complexity measure.
-
-* "total_UPDRS" and "motor_UPDRS" showcase a strong positive correlation. Where, "total_UPDRS" represents clinician's total UPDRS score  and "motor_UPDRS"  the clinician's motor UPDRS score both, linearly interpolated. 
-
- 
-# PCA interpretation
- 
-* The amount of components was determined according to the following rule. The total amount of variation that the components represent must be within 70% to 90%.
-
-*According to this parameter components 1 through 4 where selected. These components amount to a total of 76% of the total variation.
-
 #Multi dimensional scaling
-
-```{r}
 parkcorr <- cor(parkinsons)
 colnames(parkcorr) <- row.names(parkcorr) <- parklabs <- c(colnames(parkinsons))
 rge <- sapply(parkinsons, function(x) diff(range(x)))
@@ -196,6 +203,8 @@ plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2", main="Parkinsons MDS",pch=2
 text(x, y, labels = colnames(parkcorr), cex=0.8)
 ```
 
+Below are the findings from multidimensional scaling on the parkinsons data: 
+
 The statitical technique of multi dimensional scaling through this plot has confirmed that attributes form groups with similar patterns
 1. All jitter variables follow a pattern
 2. All Shimmer variables follow a patter
@@ -213,6 +222,9 @@ These findings can be logically understood as
 5. Test time and sex are two independent factors and they are showing correlation by coincidence and this inference can be ignored
 6. Age contributes as a seperate attribute to the variation in data
 7. HNR contributes as a seperate attribute to the variation in data
+
+
+#### Random forest 
 
 To confirm that the observations in the multi dimensional scaling can be used to better identify patients with disease and ideal measures to estimate progression of the disease and interpret the similarity between cetain measures let us apply another technique called random forests algorithm that uses gini index which is another way of measuring dissimilarity in the data like multi dimensional scaling.
 
@@ -266,20 +278,31 @@ DFA - Detrended Fluctuation Analysis (DFA) Quantify the stochastic self-similari
 
 PPE - Pitch Period Entropy (PPE). In speech disorders it is very difficult to sustain stable pitch due to incomplete vocal fold closure. PPE quantifies the impaired control of stabilized pitch
 
-#Exploratory factor analysis
+#### Exploratory Factor Analysis
+
+Next we try exploratory factor analysis on the data to identify important factors. 
+
 ```{r}
+#Exploratory factor analysis
 library(MVA)
 options(digits = 3)
 # EFA
-head(parkinsons) #2:4,8,16,18:22
-parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 5, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
+#head(parkinsons) #2:4,8,16,18:22
+parkinson.EFA <- factanal(parkinsons[, c(2:5,8,16,18:22)], 3, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
 parkinson.EFA
-print(parkinson.EFA$loadings, cut = 0.5)
+print(parkinson.EFA$loadings, cut = 0.45)
 ```
 
-First, when we try to do exploratory factor analysis with all the variables, the model doesn't run. After some research we have come to the conclusion that due to high multicolinearity between some variables, the algorithm is not converging. So we decided to reduce the values that have high correlation between them. From the correlation plot we can see that jitter and shimmer variables have high correlation (0.9+) between themselves. So we tried building the model with one jitter and one shimmer variable. From the random forest analysis, we saw that Jitter.Abs. and Shimmer.APQ11 have highest significance in their corresponding frequency and amplitude groups. So we took these 2 variables in the exploratory factor analysis. Also both the updrs variables have 0.9+ correlation between them. So we took one from that group too.
+First, when we try to do exploratory factor analysis with all the variables, the model doesn't run. After some research we have come to the conclusion that due to high multicolinearity between some variables (specificaly jitter and shimmer), the algorithm is not converging. So we decided to reduce the values that have high correlation between them. From the correlation plot we can see that jitter and shimmer variables have high correlation (0.9+) between themselves. So we tried building the model with one jitter and one shimmer variable. From the random forest analysis, we saw that Jitter.Abs. and Shimmer.APQ11 have highest significance in their corresponding frequency and amplitude groups. So we took these 2 variables in the exploratory factor analysis. Also both the updrs variables have 0.9+ correlation between them. So we took one from that group too.
 
-With the above mentioned variables we explored different number of factors. But if we take 2 or 3 factors then only 40-45% data is explained. Also the age, sex and test_time have very small factor coefficient and large (0.85+) uniqueness. If we have 5/6 factors then the uniqueness of these variables lessen but still they are greater than 0.7.
+With the above mentioned variables we explored different number of factors. But if we take 2 or 3 factors then only 40-45% data is explained. Also the age, sex and test_time have very small factor coefficient and large (0.8+) uniqueness. If we have 5/6 factors then the uniqueness of these variables lessen but still they are greater than 0.7.
+
+From 3 factor analysis we can see that jitter, shimmer, NHR, HNR, RPDE and PPE have higher coefficents with Factor 1. However, from the random forest analysis, we have seen that age and DFA are the most significant variables, which have really low coefficient in these analysis. 
+
+
+#### Confirmatory Factor Analysis
+
+Next we try confirmatory factor analysis to compare if the results from EFA are correct. 
 
 ```{r}
 parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 2, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
@@ -291,7 +314,7 @@ print(parkinson.EFA$loadings, cut = 0.5)
 library(sem)
 library(semPlot)
 parkinsonscov<- cor(parkinsons[,-c(1)])
-parkinson_model <- specifyModel(file = "C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinson_sem_model_efa2.txt")
+parkinson_model <- specifyModel(file = "C:\\c\\Rawls\\spring18\\MVA\\project\\ParkinsonsDiseaseDataAnalysis-master\\parkinson_sem_model_efa2.txt")
 opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
 parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
 summary(parkinson_sem)
@@ -306,12 +329,13 @@ covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
 semPaths(parkinson_sem, "est",edge.label.cex=1.5)
 
 ```
+
 
 ```{r}
 library(sem)
 library(semPlot)
 parkinsonscov<- cor(parkinsons[,-c(1)])
-parkinson_model <- specifyModel(file = "C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinson_sem_model_efa1.txt")
+parkinson_model <- specifyModel(file = "C:\\c\\Rawls\\spring18\\MVA\\project\\ParkinsonsDiseaseDataAnalysis-master\\parkinson_sem_model_efa1.txt")
 opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
 parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
 summary(parkinson_sem)
@@ -325,4 +349,109 @@ covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
 
 semPaths(parkinson_sem, "est",edge.label.cex=1.5)
 ```
+
+Since age, sex have very high uniqueness, we didn't include them in the model. Also NHR and HNR have high correlation (0.9), so we included one of them. By reducing the highly correlated and highly unique values we got only 6 variables. Then we tried exploratory factor analysis on them with 2 factors and found that shimmer, HNR and RPD have higher coefficients with factor 1. So we named factor 1 as amplitude. The jitter, DFA and PPE variables have higher coefficients with factor 2. So we named factor 2 as frequency. Next we tried to build the model for confirmatory factor analysis with these observations. 
+
+From the summary we can see that this model has GFI and AGFI index greater than 0.95, which indicates the model is good. SRMR is 0.032, which is less than 0.05. It also indicates that this is a good model. 
+
+However, we know age is the most significant variable to identify if a patient has parkinsons disease or not. It is the most important factor in calculating the updrs score that helps identifying parkinsons in a patient. But dimensionality reduction with factor analysis is not able to acknowledge age due to high uniqueness in the variable. Also high multicollinearity is another possible reason for which the factor analysis algorithm does not converge with all the variables of the dataset. So we can reach to the conclusion that exploratory and confirmatory factor analysis are not suitable dimensionality reduction techniques for this dataset. 
+
+
+#### Principal Component Analysis:
+
+Next we try pca which can be a possible solution for the multi-collinearity problem. 
+
+```{r}
+#Principal Componenets Analysis
+library(stats)
+#outliers have alreaady been removed so PCA does not requiere any changes in the data
+#standard deviations of data set
+p_sd <- sd(is.numeric(parkinsons))
+# creating covariance matrix for entire dataset
+p_cov <- cov(parkinsons, use = "everything")
+#creating correlation matrix for the entire dataset
+p_corr <-cor(parkinsons, use = "everything")
+
+#Principal Components Analysis for correlation matrix
+# we have chosen to utilize the correlation matrix for the PCA since the variables have different scales and variances
+parkinsons_pca_corr <- princomp(covmat = p_corr)
+summary(parkinsons_pca_corr, loadings = T)
+
+
+```
+
+Below are our findins from Principal Componenets Analysis: 
+
+#####Covariance Matrix Interpretation:
+
+All of the variables showcase small magnitudes which can have positive or negative linear releationships.
+ 
+#####Correlation Matrix Interpretation:
+
+From the correlation matrix we have the following observatins:
+
+1. Variable HNR which is the ratio of noise to tonal components in the voice. This variable has an inverse releationship with all the variables.
+
+2. Variables containing the word "Shimmer" have high positive correlation values with each other.
+
+3. Variables containing the word "Jitter" have high positive correlation values with each other
+
+4. High correlation values between variables containing the word Shimer with variables containing the word "Jitter"
+
+5. The PPE variable represents a nonlinear measure of fundamental frequency variation. This variable has strong positive correlations with varaibles containing the word "jitters" or "Shimmers" and the variable RPDE. RPDE represents a nonlinear dynamical complexity measure.
+
+6. "total_UPDRS" and "motor_UPDRS" showcase a strong positive correlation. Where, "total_UPDRS" represents clinician's total UPDRS score  and "motor_UPDRS"  the clinician's motor UPDRS score both, linearly interpolated. 
+
+ 
+##### PCA Interpretation:
+ 
+1. The amount of components was determined according to the following rule. The total amount of variation that the components represent must be within 70% to 90%.
+
+2. According to this parameter components 1 through 4 where selected. These components amount to a total of 76% of the total variation.
+
+
+
+
+
+
+
+
+
+### Pros and Cons of the study:
+
+1. From our study on the dataset, we have come to the conclusion that age, sex, test-time and DFA are the variables that are most difficult to capture in a factor analysis model. Though we know from Random forest analysis and research papers that these variables are most significant in deciding the UPDRS score.
+
+2. In PCA, the age variable has high coefficient in component 7. But if we consider principal components with 1+ standard deviation, we have to consider the first 5 components, discarding the 7th component. Accordingly, test time and DFA has high coefficient in 6th and 8th component. 
+
+3. The data has high correlation between the variable groups "Jitter" and "Shimmer" which caused problems related to multi-collinearity during the analysis. 
+
+4. Future study on the parkinsons dataset should include more detailed analysis on the above mentioned variables with high-uniqueness and how to tackle the issue.
+
+### References:
+
+[1] J. Jankovic, "Parkinson's disease: Clinical features and diagnosis," J. Neurol. Neurosurgery Psychiatry, vol. 79, no. 4, pp. 368-376, 2007.
+
+[2] S. B. O'Sullivan and T. J. Schmitz, "Parkinson disease," in Physical Rehabilitation, 5th ed. Philadelphia, PA, USA: F. A. Davis Company, 2007, pp. 856-894.
+
+[3] Parkinson Derne??gi. (2011). [Online]. Available: 
+http://www. parkinsondernegi.org/Icerik.aspx?Page=parkinsonnedir&ID=5
+
+[4] L. M. de Lau and M. M. Breteler, "Epidemiology of Parkinson's disease," Lancet Neurol., vol. 5, no. 6, pp. 525-535, 2006.
+
+[5] N. Singh, V. Pillay, and Y. E. Choonara, "Advances in the treatment of Parkinson's disease," Prog. Neurobiol., vol. 81, no. 1, pp. 29-44, 2007.
+
+[6] M. A. Little, P. E. McSharry, E. J. Hunter, J. Spielman, and L. O. Ramig, "Suitability of dysphonia measurements for telemonitoring of Parkinson's disease," IEEE Trans. Biomed. Eng., vol. 56, no. 4, pp. 1010-1022, Apr. 2009.
+
+[7] National Collaborating Centre for Chronic Conditions, Parkinson's Disease, London, U.K.: Royal College of Physicians, 2006.
+
+[8] Betul Erdogdu, SakarMuhammed, Erdem Isenkul, Muhammed Erdem, IsenkulC. Okan, SakarC. and Okan Sakar, " Collection and Analysis of a Parkinson Speech Dataset With Multiple Types of Sound Recordings", July 2013, IEEE Journal of Biomedical and Health Informatics 17(4):828-834, DOI: 10.1109/JBHI.2013.2245674
+
+[9] Athanasios Tsanas and Max Little, 'Accurate telemonitoring of Parkinson's disease symptom severity using nonlinear speech signal processing and statistical machine learning' 
+
+[10] Parkinsons Telemonitoring Data Set , Online link: https://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.names
+
+[11] Athanasios Tsanas, Max A. Little, Patrick E. McSharry, Lorraine O. Ramig (2009), 'Accurate telemonitoring of Parkinson.s disease progression by non-invasive speech tests', IEEE Transactions on Biomedical Engineering. 
+
+[12] Max A. Little, Patrick E. McSharry, Eric J. Hunter, Lorraine O. Ramig (2009), 'Suitability of dysphonia measurements for telemonitoring of Parkinson's disease', IEEE Transactions on Biomedical Engineering, 56(4):1015-1022
+
 
