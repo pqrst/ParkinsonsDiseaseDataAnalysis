@@ -409,13 +409,70 @@ From the correlation matrix we have the following observatins:
 
 2. According to this parameter components 1 through 4 where selected. These components amount to a total of 76% of the total variation.
 
+####Cluster Analysis
+```{r}
+pca.scores <- parkinsons_pca_corr$scores[,1:4] #since we used princomp(parkinsons, cor = T, scores = TRUE), the scores are already scaled
+park.dist <- dist(pca.scores)
+```
 
+##Hierarchical clustering
+```{r}
+hc1 <- hclust(park.dist, "complete")
+hc2 <- hclust(park.dist, "average")
+hc3 <- hclust(park.dist, "single")
 
+#Dendogram
+plot(hc1, cex = 0.5)
+```
+The dendogram is a mess, thus we perform an Elbow test to find out the number of clusters.
 
+```{r}
+#Elbow test to determine the number of clusters 
+plot(rev(hc1$height), xlim = c(0,20), main="Elbow test with complete method")
+plot(rev(hc2$height), xlim = c(0,20), main="Elbow test with average method")
+plot(rev(hc3$height), xlim = c(0,20), main="Elbow test with single method")
+```
+From the above figure, it looks like there are about 6 clusters for hierarchical clustering using Complete method, about 4 clusters using average method, and about 4 clusters using single method.
 
+```{r}
+clust1 <- cutree(hc1, 6)
+table(clust1)
 
+clust2 <- cutree(hc2, 4)
+table(clust2)
 
+clust3 <- cutree(hc3, 4)
+table(clust3)
+```
+The Hierarchical clustering does not seem like a good method.
 
+##K-Means Clustering
+Determining the number of clusters
+```{r}
+plot.wgss = function(mydata, maxc) {
+wss = numeric(maxc)
+for (i in 1:maxc) wss[i] = kmeans(mydata,centers=i, nstart = 10)$tot.withinss 
+plot(1:maxc, wss, type="b", xlab="Number of Clusters",
+ylab="Within groups sum of squares", main="Scree Plot") }
+```
+
+```{r}
+plot.wgss(pca.scores, 20) # Elbow test
+```
+
+From the abve Scree Plot, looks like we can use about 8 clusters for our data.
+```{r}
+km <- kmeans(pca.scores, 8)
+table(km$cluster)
+```
+
+##Model-based clustering
+```{r}
+library(mclust)
+mc <- Mclust(pca.scores, 8)
+summary(mc)
+```
+We can see that the model based clustering is much more better for our data set.
 
 ### Pros and Cons of the study:
 
