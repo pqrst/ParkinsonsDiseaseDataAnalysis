@@ -94,13 +94,13 @@ parkinsons <- outlier[-hull2,]
 hull3 <- chull(parkinsons[,c(6,18)])
 outlier <- parkinsons[-hull3,]
 
-hull4 <- chull(parkinsons[,c(6,20)])
+hull4 <- chull(outlier[,c(6,20)])
 parkinsons <- outlier[-hull4,]
 
 hull5 <- chull(parkinsons[,c(6,21)])
 outlier <- parkinsons[-hull5,]
 
-hull6 <- chull(parkinsons[,c(6,22)])
+hull6 <- chull(outlier[,c(6,22)])
 parkinsons <- outlier[-hull6,]
 
 dim(parkinsons)
