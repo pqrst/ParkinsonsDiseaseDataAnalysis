@@ -374,7 +374,7 @@ p_corr <-cor(parkinsons, use = "everything")
 
 #Principal Components Analysis for correlation matrix
 # we have chosen to utilize the correlation matrix for the PCA since the variables have different scales and variances
-parkinsons_pca_corr <- princomp(covmat = p_corr)
+parkinsons_pca_corr <- princomp(parkinsons, cor = T, scores = TRUE)
 summary(parkinsons_pca_corr, loadings = T)
 
 
@@ -382,11 +382,11 @@ summary(parkinsons_pca_corr, loadings = T)
 
 Below are our findins from Principal Componenets Analysis: 
 
-#####Covariance Matrix Interpretation:
+##### Covariance Matrix Interpretation:
 
 All of the variables showcase small magnitudes which can have positive or negative linear releationships.
  
-#####Correlation Matrix Interpretation:
+##### Correlation Matrix Interpretation:
 
 From the correlation matrix we have the following observatins:
 
@@ -420,9 +420,12 @@ park.dist <- dist(pca.scores)
 hc1 <- hclust(park.dist, "complete")
 hc2 <- hclust(park.dist, "average")
 hc3 <- hclust(park.dist, "single")
-
-#Dendogram
-plot(hc1, cex = 0.5)
+```
+# Dendograms
+```{r}
+plot(hc1, cex = 0.5, main= "complete")
+plot(hc2, cex = 0.5, main= "average")
+plot(hc3, cex = 0.5, main= "single")
 ```
 The dendogram is a mess, thus we perform an Elbow test to find out the number of clusters.
 
@@ -444,6 +447,16 @@ table(clust2)
 clust3 <- cutree(hc3, 4)
 table(clust3)
 ```
+
+We can graphically show 2-D plot of the clustering using PC1 and PC2 scores.
+
+```{r}
+xlim <- range(pca.scores[,1])
+plot(pca.scores[,1:2], xlim = xlim, ylim = xlim, col = clust1)
+plot(pca.scores[,1:2], xlim = xlim, ylim = xlim, col = clust2)
+plot(pca.scores[,1:2], xlim = xlim, ylim = xlim, col = clust3)
+```
+
 The Hierarchical clustering does not seem like a good method.
 
 ## K-Means Clustering
@@ -466,12 +479,24 @@ km <- kmeans(pca.scores, 8)
 table(km$cluster)
 ```
 
+We can graphically show 2-D plot of the clustering using PC1 and PC2 scores.
+
+```{r}
+plot(pca.scores[,1:2], col=km$cluster)
+```
+
 ## Model-based clustering
 ```{r}
 library(mclust)
 mc <- Mclust(pca.scores, 8)
 summary(mc)
 ```
+
+We can graphically show 2-D plot of the clustering using PC1 and PC2 scores.
+```{r}
+plot(pca.scores[,1:2], col = mc$classification)
+```
+
 We can see that the model based clustering is much more better for our data set.
 
 ### Pros and Cons of the study:
