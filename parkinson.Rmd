@@ -532,6 +532,12 @@ We can see that the model based clustering is much more better for our data set.
 
 4. Future study on the parkinsons dataset should include more detailed analysis on the above mentioned variables with high-uniqueness and how to tackle the issue.
 
+5. Our data set is not perfectly normally distributed (mutivariate normality).
+
+6. While performing cluster analysis on our redued dimensions based on Principle components, we only used 4 main principle components that explained about 76% variance in our data set. Thus, there may be values in our clusters that would not be able to explain all the variance in our data using Clustering.
+
+7. Determining the number of clusters was a challenge. Sometimes it was not clear at all, as to how may clusters to use, even with the elbow test.
+
 ### References:
 
 [1] J. Jankovic, "Parkinson's disease: Clinical features and diagnosis," J. Neurol. Neurosurgery Psychiatry, vol. 79, no. 4, pp. 368-376, 2007.
