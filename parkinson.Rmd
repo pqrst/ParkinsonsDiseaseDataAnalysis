@@ -60,6 +60,7 @@ PPE: A nonlinear measure of fundamental frequency variation
 
 ### Checking Multivariate normality
 ```{r}
+library(mvnormtest)
 x <- parkinsons
 cm <- colMeans(x)
 S <- cov(x)
