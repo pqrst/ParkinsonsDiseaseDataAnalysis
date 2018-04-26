@@ -12,15 +12,15 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Introduction: 
+# Introduction: 
 
-###Description and literature:
+### Description and literature:
 
 Parkinson's disease is a neurodegenerative disorder of central nervous system that causes partial or full loss of motor reflexes, speech, behavior, mental processing, and other vital functions [1]. It is generally observed in elderly people and causes disorders in speech and motor abilities (writing, balance, etc.) of 90% of the patients [2]. Ensuing Alzheimer, PD is the second common neurological health problem in elder ages and it is estimated that nearly 10 million people all around the world and approximately 100k people in Turkey are suffering from this disease [3], [4]. Particularly, PD is generally seen in one out of every hundred people aged over 65. Currently, there is no known cure for the disease [5], [6]. Although, there is significant amount of drug therapies to decrease difficulties caused by the disorder, PD is usually diagnosed and treated using invasive methods [7]. Therefore, this complicates the process of diagnosis and treatment of patients who are grieving from the disease. Our main motivation for working with this dataset is to find significant variables in identifying patients suffering from Parkinson's disease with the means of multivariate analysis. 
 
 In this study, we will analyze the patients' data who are diagnosed with the disease. Using speech data from subjects is expected to help the development of a noninvasive diagnostic. There are important examples of these kinds of Alzheimer and PD studies all around the world [8]. The studies based on the PD focus on symptoms like slowness in movement, poor balance, trembling, or stiffness of some body parts but especially voice problems. The main reason behind the popularity of PD diagnosis from speech impairments is that tele-diagnosis and tele-monitoring systems based on speech signals are low in cost and easy to self-use [6], [8]. Such systems lower the inconvenience and cost of physical visits of PD patients to the medical clinic, enable the early diagnosis of the disease, and also lessen the workload of medical personnel [7], [8]. People with Parkinsonism (PWP) suffer from speech impairments like dysphonia (defective use of the voice), hypophonia (reduced volume), monotone (reduced pitch range), and dysarthria (difficulty with articulation of sounds or syllables). Even though there are many studies aiming at diagnosing and monitoring PD using these impairments, the origin of these studies leans to diagnose basic voice disorders [8]. Therefore, our analysis in this project will be based on voice parameters of the affected. The following section will illustrate a short description of the dataset formation and how we are planning to approach the problem. 
 
-###Data:
+### Data:
 
 The dataset was created by Athanasios Tsanas and Max Little of the University of Oxford, in collaboration with 10 medical centers in the US and Intel Corporation who developed the tele-monitoring device to record the speech signals. The original study [9] used a range of linear and nonlinear regression methods to predict the clinician's Parkinson's disease symptom score on the UPDRS scale.
 
