@@ -58,18 +58,37 @@ DFA: Signal fractal scaling exponent
 
 PPE: A nonlinear measure of fundamental frequency variation
 
-### Data Cleaning and Outlier Removal:
+### Checking Multivariate normality
+```{r}
+x <- parkinsons
+cm <- colMeans(x)
+S <- cov(x)
+d <- apply(x, 1, function(x) t(x - cm) %*% solve(S) %*% (x - cm))
+
+# Chi-Square plot:
+plot(qchisq((1:nrow(x) - 1/2) / nrow(x), df = ncol(x)), 
+     sort(d),
+     xlab = expression(paste(chi[22]^2, 
+                             " Quantile")), 
+     ylab = "Ordered distances")
+
+abline(a = 0, b = 1)
+```
+
+From the above figure, we can see that our multivariate data is not perfectly normally distributed. There may be some outliers in our data set.
+
+# Data Cleaning and Outlier Removal:
 
 Our first step is going through the dataset and identify any missing value or outlier to take necessary measures. This step is essential to prepare the data for fruitful analysis.
 
-####Code and interpretation
+#### Code and interpretation
 ```{r}
 #Read the data file
 parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
 #parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
 str(parkinsons)
 ```
-####Check null values
+#### Check null values
 ```{r}
 missing <- apply(parkinsons, 2, function(x) 
   round(100 * (length(which(is.na(x))))/length(x) , digits = 1))
@@ -77,14 +96,14 @@ as.data.frame(missing)
 ```
 There are no missing values in our dataset.
 
-####Check correlations between the variables
+#### Check correlations between the variables
 ```{r}
 library(corrplot)
 corrplot(cor(parkinsons), type="full", method ="color", title = "Parkinson correlatoin plot", mar=c(0,0,1,0), tl.cex= 0.8, outline= T, tl.col="indianred4")
 ```
 We can see that all the jitter variables highly correlate with Shimmer variables.
 
-####Outlier detection
+#### Outlier detection
 ```{r}
 summary(parkinsons[,-3])
 ```
@@ -154,7 +173,7 @@ parkinsons <- outlier[-hull6,]
 dim(parkinsons)
 ```
 
-###Dimensionality Reduction: 
+# Dimensionality Reduction: 
 
 Our next step is dimensionality reduction. The dataset is very large with 22 variables and some of the variables have high correlations between them. So we are expecting to reduce the number of dimensions for better interpretation of the data. 
 
@@ -224,7 +243,7 @@ These findings can be logically understood as
 7. HNR contributes as a seperate attribute to the variation in data
 
 
-#### Random forest 
+# Random forest 
 
 To confirm that the observations in the multi dimensional scaling can be used to better identify patients with disease and ideal measures to estimate progression of the disease and interpret the similarity between cetain measures let us apply another technique called random forests algorithm that uses gini index which is another way of measuring dissimilarity in the data like multi dimensional scaling.
 
@@ -278,7 +297,7 @@ DFA - Detrended Fluctuation Analysis (DFA) Quantify the stochastic self-similari
 
 PPE - Pitch Period Entropy (PPE). In speech disorders it is very difficult to sustain stable pitch due to incomplete vocal fold closure. PPE quantifies the impaired control of stabilized pitch
 
-#### Exploratory Factor Analysis
+# Exploratory Factor Analysis
 
 Next we try exploratory factor analysis on the data to identify important factors. 
 
@@ -300,7 +319,7 @@ With the above mentioned variables we explored different number of factors. But 
 From 3 factor analysis we can see that jitter, shimmer, NHR, HNR, RPDE and PPE have higher coefficents with Factor 1. However, from the random forest analysis, we have seen that age and DFA are the most significant variables, which have really low coefficient in these analysis. 
 
 
-#### Confirmatory Factor Analysis
+# Confirmatory Factor Analysis
 
 Next we try confirmatory factor analysis to compare if the results from EFA are correct. 
 
@@ -357,7 +376,7 @@ From the summary we can see that this model has GFI and AGFI index greater than 
 However, we know age is the most significant variable to identify if a patient has parkinsons disease or not. It is the most important factor in calculating the updrs score that helps identifying parkinsons in a patient. But dimensionality reduction with factor analysis is not able to acknowledge age due to high uniqueness in the variable. Also high multicollinearity is another possible reason for which the factor analysis algorithm does not converge with all the variables of the dataset. So we can reach to the conclusion that exploratory and confirmatory factor analysis are not suitable dimensionality reduction techniques for this dataset. 
 
 
-#### Principal Component Analysis:
+# Principal Component Analysis:
 
 Next we try pca which can be a possible solution for the multi-collinearity problem. 
 
@@ -409,19 +428,19 @@ From the correlation matrix we have the following observatins:
 
 2. According to this parameter components 1 through 4 where selected. These components amount to a total of 76% of the total variation.
 
-##### Cluster Analysis
+# Cluster Analysis
 ```{r}
 pca.scores <- parkinsons_pca_corr$scores[,1:4] #since we used princomp(parkinsons, cor = T, scores = TRUE), the scores are already scaled
 park.dist <- dist(pca.scores)
 ```
 
-## Hierarchical clustering
+### Hierarchical clustering
 ```{r}
 hc1 <- hclust(park.dist, "complete")
 hc2 <- hclust(park.dist, "average")
 hc3 <- hclust(park.dist, "single")
 ```
-# Dendograms
+#### Dendograms
 ```{r}
 plot(hc1, cex = 0.5, main= "complete")
 plot(hc2, cex = 0.5, main= "average")
@@ -429,7 +448,7 @@ plot(hc3, cex = 0.5, main= "single")
 ```
 The dendogram is a mess, thus we perform an Elbow test to find out the number of clusters.
 
-# Elbow test to determine the number of clusters 
+#### Elbow test to determine the number of clusters 
 ```{r}
 plot(rev(hc1$height), xlim = c(0,20), main="Elbow test with complete method")
 plot(rev(hc2$height), xlim = c(0,20), main="Elbow test with average method")
@@ -468,7 +487,7 @@ for (i in 1:maxc) wss[i] = kmeans(mydata,centers=i, nstart = 10)$tot.withinss
 plot(1:maxc, wss, type="b", xlab="Number of Clusters",
 ylab="Within groups sum of squares", main="Scree Plot") }
 ```
-# Elbow test
+##### Elbow test
 ```{r}
 plot.wgss(pca.scores, 20) # Elbow test
 ```
@@ -499,7 +518,7 @@ plot(pca.scores[,1:2], col = mc$classification)
 
 We can see that the model based clustering is much more better for our data set.
 
-### Pros and Cons of the study:
+## Pros and Cons of the study:
 
 1. From our study on the dataset, we have come to the conclusion that age, sex, test-time and DFA are the variables that are most difficult to capture in a factor analysis model. Though we know from Random forest analysis and research papers that these variables are most significant in deciding the UPDRS score.
 
