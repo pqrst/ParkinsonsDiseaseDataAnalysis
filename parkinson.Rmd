@@ -538,6 +538,8 @@ We can see that the model based clustering is much more better for our data set.
 
 7. Determining the number of clusters was a challenge. Sometimes it was not clear at all, as to how may clusters to use, even with the elbow test.
 
+8. Through dimensionality reduction using MDS we have arrived at the observation that men and women create seperate sets of data points on the plot because the frequency and amplitude of the male and female voices are in different ranges and this key observation is needed to identify progression of the disease on gender basis.
+
 ### References:
 
 [1] J. Jankovic, "Parkinson's disease: Clinical features and diagnosis," J. Neurol. Neurosurgery Psychiatry, vol. 79, no. 4, pp. 368-376, 2007.
