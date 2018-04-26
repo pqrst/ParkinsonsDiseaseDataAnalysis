@@ -59,6 +59,15 @@ DFA: Signal fractal scaling exponent
 PPE: A nonlinear measure of fundamental frequency variation
 
 ### Checking Multivariate normality
+
+```{r}
+#Read the data file
+parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
+#parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+str(parkinsons)
+```
+
+
 ```{r}
 library(mvnormtest)
 x <- parkinsons
@@ -82,13 +91,7 @@ From the above figure, we can see that our multivariate data is not perfectly no
 
 Our first step is going through the dataset and identify any missing value or outlier to take necessary measures. This step is essential to prepare the data for fruitful analysis.
 
-#### Code and interpretation
-```{r}
-#Read the data file
-parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
-#parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
-str(parkinsons)
-```
+
 #### Check null values
 ```{r}
 missing <- apply(parkinsons, 2, function(x) 
@@ -334,7 +337,7 @@ print(parkinson.EFA$loadings, cut = 0.5)
 library(sem)
 library(semPlot)
 parkinsonscov<- cor(parkinsons[,-c(1)])
-parkinson_model <- specifyModel(file = "C:\\c\\Rawls\\spring18\\MVA\\project\\ParkinsonsDiseaseDataAnalysis-master\\parkinson_sem_model_efa2.txt")
+parkinson_model <- specifyModel(file = "C:\\ttu\\spring18\\MVA\\project\\ParkinsonsDiseaseDataAnalysis-master\\parkinson_sem_model_efa2.txt")
 opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
 parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
 summary(parkinson_sem)
@@ -355,7 +358,7 @@ semPaths(parkinson_sem, "est",edge.label.cex=1.5)
 library(sem)
 library(semPlot)
 parkinsonscov<- cor(parkinsons[,-c(1)])
-parkinson_model <- specifyModel(file = "C:\\c\\Rawls\\spring18\\MVA\\project\\ParkinsonsDiseaseDataAnalysis-master\\parkinson_sem_model_efa1.txt")
+parkinson_model <- specifyModel(file = "C:\\ttu\\spring18\\MVA\\project\\ParkinsonsDiseaseDataAnalysis-master\\parkinson_sem_model_efa1.txt")
 opt <- options(fit.indices = c("GFI", "AGFI", "SRMR"))
 parkinson_sem <- sem(parkinson_model, parkinsonscov, nrow(parkinsons))
 summary(parkinson_sem)
