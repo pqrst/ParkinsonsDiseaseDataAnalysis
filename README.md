@@ -1,4 +1,4 @@
-# ParkinsonsDiseaseDataAnalysis
+# Parkinsons Disease Data Analysis
 
 ## Introduction:
 ### Description and literature:
