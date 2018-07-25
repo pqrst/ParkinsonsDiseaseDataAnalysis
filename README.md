@@ -43,12 +43,12 @@ We can see that all the jitter variables highly correlate with Shimmer variables
 
 In this section we will look at some of the significant features and check if there are outliers available.
 
-![2](https://user-images.githubusercontent.com/5343403/43223419-a7931266-9018-11e8-993a-546f032f70df.png)
-![3](https://user-images.githubusercontent.com/5343403/43223420-a7a0de64-9018-11e8-977f-5ee9797eefae.png)
-![4](https://user-images.githubusercontent.com/5343403/43223422-a7b098d6-9018-11e8-9249-ad39b8ff2a2d.png)
-![5](https://user-images.githubusercontent.com/5343403/43223423-a7c41c30-9018-11e8-9cb3-2c4532ce0478.png)
-![6](https://user-images.githubusercontent.com/5343403/43223424-a7d51c42-9018-11e8-80a2-bf2f9e139bab.png)
-![1](https://user-images.githubusercontent.com/5343403/43223425-a7e8a64a-9018-11e8-8e37-c9febc27b78b.png)
+![2](https://user-images.githubusercontent.com/5343403/43223622-5079b920-9019-11e8-8cba-3c46823e0b17.png)
+![3](https://user-images.githubusercontent.com/5343403/43223623-508a541a-9019-11e8-86f9-23e546e01f0f.png)
+![4](https://user-images.githubusercontent.com/5343403/43223624-509d9a2a-9019-11e8-88e4-907b184a64b3.png)
+![5](https://user-images.githubusercontent.com/5343403/43223625-50b829ee-9019-11e8-9317-fed790ae3654.png)
+![6](https://user-images.githubusercontent.com/5343403/43223626-50ccfc66-9019-11e8-8b61-4cf5c4e70d3a.png)
+![1](https://user-images.githubusercontent.com/5343403/43223627-50e03d62-9019-11e8-8320-819664db37d0.png)
 
 In our scattered plot between total_UPDRS and Jitter, it looks like, we can see out outlier observations in our data. Similarly, in our plots with total_UPDRS vs Shimmer, total_UPDRS vs NHR, total_UPDRS vs RPDE, total_UPDRS vs DFA, and total_UPDRS vs PPE, we can see some outlier observations.
 
