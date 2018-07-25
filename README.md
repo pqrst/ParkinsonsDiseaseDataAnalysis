@@ -153,23 +153,23 @@ start 1 value: 0.261 uniqs: 0.9705 0.8226 0.9983 0.9623 0.0050 0.2976 0.0050 0.0
          0.267 
  
 #### Loadings:
-               Factor1 Factor2 Factor3
- age                    0.162         
- sex                           -0.416 
- test_time                            
- motor_UPDRS            0.187         
- Jitter.Abs.    0.910           0.408 
- Shimmer.APQ11  0.651   0.523         
- NHR            0.915   0.159  -0.365 
- HNR           -0.689  -0.657  -0.131 
- RPDE           0.478   0.430   0.241 
- DFA            0.145   0.161   0.530 
- PPE            0.692   0.354   0.359 
+                             Factor1 Factor2 Factor3
+               age                    0.162         
+               sex                           -0.416 
+               test_time                            
+               motor_UPDRS            0.187         
+               Jitter.Abs.    0.910           0.408 
+               Shimmer.APQ11  0.651   0.523         
+               NHR            0.915   0.159  -0.365 
+               HNR           -0.689  -0.657  -0.131 
+               RPDE           0.478   0.430   0.241 
+               DFA            0.145   0.161   0.530 
+               PPE            0.692   0.354   0.359 
  
-                Factor1 Factor2 Factor3
- SS loadings      3.294   1.134   0.965
- Proportion Var   0.299   0.103   0.088
- Cumulative Var   0.299   0.403   0.490
+                                Factor1 Factor2 Factor3
+                SS loadings      3.294   1.134   0.965
+                Proportion Var   0.299   0.103   0.088
+                Cumulative Var   0.299   0.403   0.490
  
  Test of the hypothesis that 3 factors are sufficient.
  The chi square statistic is 1506 on 25 degrees of freedom.
@@ -177,23 +177,23 @@ start 1 value: 0.261 uniqs: 0.9705 0.8226 0.9983 0.9623 0.0050 0.2976 0.0050 0.0
  print(parkinson.EFA$loadings, cut = 0.45)
 
  #### Loadings:
-               Factor1 Factor2 Factor3
- age                                  
- sex                                  
- test_time                            
- motor_UPDRS                          
- Jitter.Abs.    0.910                 
- Shimmer.APQ11  0.651   0.523         
- NHR            0.915                 
- HNR           -0.689  -0.657         
- RPDE           0.478                 
- DFA                            0.530 
- PPE            0.692                 
+                             Factor1 Factor2 Factor3
+               age                                  
+               sex                                  
+               test_time                            
+               motor_UPDRS                          
+               Jitter.Abs.    0.910                 
+               Shimmer.APQ11  0.651   0.523         
+               NHR            0.915                 
+               HNR           -0.689  -0.657         
+               RPDE           0.478                 
+               DFA                            0.530 
+               PPE            0.692                 
  
-                Factor1 Factor2 Factor3
- SS loadings      3.294   1.134   0.965
- Proportion Var   0.299   0.103   0.088
- Cumulative Var   0.299   0.403   0.490
+                                Factor1 Factor2 Factor3
+                SS loadings      3.294   1.134   0.965
+                Proportion Var   0.299   0.103   0.088
+                Cumulative Var   0.299   0.403   0.490
  
 First, when we try to do exploratory factor analysis with all the variables, the model doesn’t run. After some research we have come to the conclusion that due to high multicolinearity between some variables (specificaly jitter and shimmer), the algorithm is not converging. So we decided to reduce the values that have high correlation between them. From the correlation plot we can see that jitter and shimmer variables have high correlation (0.9+) between themselves. So we tried building the model with one jitter and one shimmer variable. From the random forest analysis, we saw that Jitter.Abs. and Shimmer.APQ11 have highest significance in their corresponding frequency and amplitude groups. So we took these 2 variables in the exploratory factor analysis. Also both the updrs variables have 0.9+ correlation between them. So we took one from that group too.
 
@@ -216,52 +216,53 @@ Call:
 #### Uniquenesses:
          age         sex   test_time motor_UPDRS total_UPDRS   Jitter... 
        0.906       0.993       0.993       0.102       0.005       0.102 
- Jitter.Abs. Shimmer.DDA         NHR         HNR        RPDE         DFA 
-       0.140       0.446       0.332       0.353       0.671       0.894 
+       
+       Jitter.Abs. Shimmer.DDA         NHR         HNR        RPDE         DFA 
+             0.140       0.446       0.332       0.353       0.671       0.894 
          PPE 
        0.332 
  
 #### Loadings:
-             Factor1 Factor2
- age                  0.303 
- sex                        
- test_time                  
- motor_UPDRS          0.946 
- total_UPDRS          0.996 
- Jitter...    0.947         
- Jitter.Abs.  0.927         
- Shimmer.DDA  0.743         
- NHR          0.817         
- HNR         -0.798  -0.106 
- RPDE         0.561   0.120 
- DFA          0.286  -0.154 
- PPE          0.811         
+                         Factor1 Factor2
+             age                  0.303 
+             sex                        
+             test_time                  
+             motor_UPDRS          0.946 
+             total_UPDRS          0.996 
+             Jitter...    0.947         
+             Jitter.Abs.  0.927         
+             Shimmer.DDA  0.743         
+             NHR          0.817         
+             HNR         -0.798  -0.106 
+             RPDE         0.561   0.120 
+             DFA          0.286  -0.154 
+             PPE          0.811         
  
-                Factor1 Factor2
- SS loadings       4.68   2.052
- Proportion Var    0.36   0.158
- Cumulative Var    0.36   0.518
+                                Factor1 Factor2
+                SS loadings       4.68   2.052
+                Proportion Var    0.36   0.158
+                Cumulative Var    0.36   0.518
  
  Test of the hypothesis that 2 factors are sufficient.
  The chi square statistic is 13107 on 53 degrees of freedom.
  The p-value is 0
-print(parkinson.EFA$loadings, cut = 0.5)
+ print(parkinson.EFA$loadings, cut = 0.5)
 
 #### Loadings:
-             Factor1 Factor2
- age                        
- sex                        
- test_time                  
- motor_UPDRS          0.946 
- total_UPDRS          0.996 
- Jitter...    0.947         
- Jitter.Abs.  0.927         
- Shimmer.DDA  0.743         
- NHR          0.817         
- HNR         -0.798         
- RPDE         0.561         
- DFA                        
- PPE          0.811         
+                         Factor1 Factor2
+             age                        
+             sex                        
+             test_time                  
+             motor_UPDRS          0.946 
+             total_UPDRS          0.996 
+             Jitter...    0.947         
+             Jitter.Abs.  0.927         
+             Shimmer.DDA  0.743         
+             NHR          0.817         
+             HNR         -0.798         
+             RPDE         0.561         
+             DFA                        
+             PPE          0.811         
  
                 Factor1 Factor2
  SS loadings       4.68   2.052
