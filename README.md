@@ -29,16 +29,31 @@ RPDE: A nonlinear dynamical complexity measure
 DFA: Signal fractal scaling exponent
 PPE: A nonlinear measure of fundamental frequency variation
 
-### Data Cleaning and Outlier Removal:
+## Data Cleaning and Outlier Removal:
 
 Our first step is going through the dataset and identify any missing value or outlier to take necessary measures. This step is essential to prepare the data for fruitful analysis. There are no missing values in our dataset.
 
-#### Correlations between the variables
+### Correlations between the variables
 
 ![correlation_plot](https://user-images.githubusercontent.com/5343403/43222766-b46c0a58-9016-11e8-875a-780cb9e3ebe7.png)
 
 We can see that all the jitter variables highly correlate with Shimmer variables.
 
+### Outlier Detection
+
+In this section we will look at some of the significant features and check if there are outliers available.
+
+![3](https://user-images.githubusercontent.com/5343403/43223116-b20fb07e-9017-11e8-824a-9b7a7b489dc8.png)
+![4](https://user-images.githubusercontent.com/5343403/43223118-b22a3b24-9017-11e8-8321-42f0ace4fd84.png)
+![1](https://user-images.githubusercontent.com/5343403/43223119-b243299a-9017-11e8-8d6a-0d607e937d51.png)
+![2](https://user-images.githubusercontent.com/5343403/43223120-b263fa6c-9017-11e8-9fc7-fd7e4c1de40b.png)
+![5](https://user-images.githubusercontent.com/5343403/43223125-b761ac3a-9017-11e8-95aa-a99934930e55.png)
+![6](https://user-images.githubusercontent.com/5343403/43223126-b772f5c6-9017-11e8-86b1-d18ffd0f1b7f.png)
+![9](https://user-images.githubusercontent.com/5343403/43223146-c6dde1d8-9017-11e8-8e56-9c61aefe1e70.png)
+
+In our scattered plot between total_UPDRS and Jitter, it looks like, we can see out outlier observations in our data. Similarly, in our plots with total_UPDRS vs Shimmer, total_UPDRS vs NHR, total_UPDRS vs RPDE, total_UPDRS vs DFA, and total_UPDRS vs PPE, we can see some outlier observations.
+
+We will now look into bivariate boxplots in our data to look for outlier observations in our data.
 
 
 
