@@ -145,9 +145,10 @@ start 1 value: 0.261 uniqs: 0.9705 0.8226 0.9983 0.9623 0.0050 0.2976 0.0050 0.0
 
 #### Uniquenesses:
            age           sex     test_time   motor_UPDRS   Jitter.Abs. 
-          0.971         0.823         0.998         0.962         0.005 
- Shimmer.APQ11           NHR           HNR          RPDE           DFA 
-         0.298         0.005         0.078         0.528         0.672 
+         0.971         0.823         0.998         0.962         0.005 
+         
+          Shimmer.APQ11           NHR           HNR          RPDE           DFA 
+                   0.298         0.005         0.078         0.528         0.672 
            PPE 
          0.267 
  
