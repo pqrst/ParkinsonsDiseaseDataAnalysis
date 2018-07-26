@@ -325,7 +325,7 @@ Call:
           
           semPaths(parkinson_sem, "est",edge.label.cex=1.5)
           
-          ![model_1](https://user-images.githubusercontent.com/5343403/43227123-68a68d2a-9023-11e8-9ab9-acf8e76a85a9.png)
+   ![model_1](https://user-images.githubusercontent.com/5343403/43227123-68a68d2a-9023-11e8-9ab9-acf8e76a85a9.png)
           
           summary(parkinson_sem)
           
