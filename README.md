@@ -128,7 +128,7 @@ Random forest helps in measuring and identifying the correct measure that can ai
  Jitter.DDP ....... 4.843811\
  Shimmer .......... 4.836342\
  Jitter.RAP ....... 4.544362\
- Shimmer.dB. ...... 4.343984\
+ Shimmer.dB. ...... 4.343984
 
 On applying random forest we can observe that certain attributes contribute higher to the split in the dataset i.e. certain observations help better in categorising patients based on UPDRS scores and contribute higher to disease progression or severity. below are some analysis on the output:
 
@@ -141,7 +141,7 @@ start 1 value: 0.261 uniqs: 0.9705 0.8226 0.9983 0.9623 0.0050 0.2976 0.0050 0.0
 
 #### parkinson.EFA
  Call:\
- factanal(x = parkinsons[, c(2:5, 8, 16, 18:22)], factors = 3,     n.obs = nrow(parkinsons), rotation = "varimax", control = list(trace = T))\
+ factanal(x = parkinsons[, c(2:5, 8, 16, 18:22)], factors = 3,     n.obs = nrow(parkinsons), rotation = "varimax", control = list(trace = T))
 
 #### Uniquenesses:
            age           sex     test_time   motor_UPDRS   Jitter.Abs. 
@@ -174,7 +174,7 @@ start 1 value: 0.261 uniqs: 0.9705 0.8226 0.9983 0.9623 0.0050 0.2976 0.0050 0.0
  Test of the hypothesis that 3 factors are sufficient.\
  The chi square statistic is 1506 on 25 degrees of freedom.\
  The p-value is 7.7e-303\
- print(parkinson.EFA$loadings, cut = 0.45)\
+ print(parkinson.EFA$loadings, cut = 0.45)
 
  #### Loadings:
                              Factor1 Factor2 Factor3
@@ -208,10 +208,10 @@ Next we try confirmatory factor analysis to compare if the results from EFA are 
 parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 2, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))\
 
 start 1 value: 2.27 uniqs: 0.906 0.993 0.994 0.102 0.005 0.102 0.140 0.446 0.332 0.353 0.671 0.894 0.332\
-parkinson.EFA\
+parkinson.EFA
 
 Call:\
- factanal(x = parkinsons[, c(2:8, 17, 18:22)], factors = 2, n.obs = nrow(parkinsons),     rotation = "varimax", control = list(trace = T))\
+ factanal(x = parkinsons[, c(2:8, 17, 18:22)], factors = 2, n.obs = nrow(parkinsons),     rotation = "varimax", control = list(trace = T))
  
 #### Uniquenesses:
          age         sex   test_time motor_UPDRS total_UPDRS   Jitter... 
@@ -399,7 +399,7 @@ However, we know age is the most significant variable to identify if a patient h
 Next we try pca which can be a possible solution for the multi-collinearity problem.
 
 parkinsons_pca_corr <- princomp(covmat = p_corr)\
-summary(parkinsons_pca_corr, loadings = T)\
+summary(parkinsons_pca_corr, loadings = T)
  
  Importance of components:
  
