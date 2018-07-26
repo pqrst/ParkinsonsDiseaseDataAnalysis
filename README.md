@@ -110,25 +110,25 @@ Random forest helps in measuring and identifying the correct measure that can ai
 
 #### Importance of each predictor
 
-##### age              107.481221
-##### DFA               30.280552
-##### Jitter.Abs.       13.233061
-##### test_time         13.181421
-##### HNR               13.179312
-##### RPDE              12.354213
-##### sex               10.586328
-##### PPE               10.273227
-##### NHR                7.622037
-##### Shimmer.APQ11      6.193817
-##### Shimmer.DDA        5.627689
-##### Shimmer.APQ3       5.509867
-##### Shimmer.APQ5       5.475710
-##### Jitter...          5.042090
-##### Jitter.PPQ5        5.010854
-##### Jitter.DDP         4.843811
-##### Shimmer            4.836342
-##### Jitter.RAP         4.544362
-##### Shimmer.dB.        4.343984
+ age ............ 107.481221
+ DFA ............. 30.280552
+ Jitter.Abs. ..... 13.233061
+ test_time ....... 13.181421
+ HNR ............. 13.179312
+ RPDE ............ 12.354213
+ sex ............. 10.586328
+ PPE ............. 10.273227
+ NHR .............. 7.622037
+ Shimmer.APQ11 .... 6.193817
+ Shimmer.DDA ...... 5.627689
+ Shimmer.APQ3 ..... 5.509867
+ Shimmer.APQ5 ..... 5.475710
+ Jitter............ 5.042090
+ Jitter.PPQ5 ...... 5.010854
+ Jitter.DDP ....... 4.843811
+ Shimmer .......... 4.836342
+ Jitter.RAP ....... 4.544362
+ Shimmer.dB. ...... 4.343984
 
 On applying random forest we can observe that certain attributes contribute higher to the split in the dataset i.e. certain observations help better in categorising patients based on UPDRS scores and contribute higher to disease progression or severity. below are some analysis on the output:
 
