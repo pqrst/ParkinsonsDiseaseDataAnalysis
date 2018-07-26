@@ -264,127 +264,127 @@ Call:
              DFA                        
              PPE          0.811         
  
-                Factor1 Factor2
- SS loadings       4.68   2.052
- Proportion Var    0.36   0.158
- Cumulative Var    0.36   0.518
-
-summary(parkinson_sem)
- 
-  Model Chisquare =  5902   Df =  21 Pr(>Chisq) = 0
-  Goodness-of-fit index =  0.823
-  Adjusted goodness-of-fit index =  0.621
-  SRMR =  0.0841
- 
-  Normalized Residuals
-    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  -19.17   -4.40    0.00   -0.91    2.48   11.40 
- 
-  R-square for Endogenous Variables
+                                Factor1 Factor2
+                SS loadings       4.68   2.052
+                Proportion Var    0.36   0.158
+                Cumulative Var    0.36   0.518
+                
+                summary(parkinson_sem)
+                
+                Model Chisquare =  5902   Df =  21 Pr(>Chisq) = 0
+                Goodness-of-fit index =  0.823
+                Adjusted goodness-of-fit index =  0.621
+                SRMR =  0.0841
+                
+                Normalized Residuals
+                  Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+                -19.17   -4.40    0.00   -0.91    2.48   11.40 
+                
+                R-square for Endogenous Variables
          age         sex Jitter.Abs. Shimmer.dB.         NHR         HNR 
       0.0107      0.0953      0.6165      0.6784      0.6461      0.6802 
         RPDE         DFA         PPE 
       0.4444      0.0773      0.7139 
- 
-  Parameter Estimates
+      
+      Parameter Estimates
           Estimate Std Error z value Pr(>|z|)                              
- lambda1   0.103   0.02382      4.33  1.47e-05 age <--- person             
- lambda2  -0.309   0.06082     -5.08  3.85e-07 sex <--- person             
- lambda7   0.785   0.01121     70.05  0.00e+00 Jitter.Abs. <--- voice      
- lambda12  0.824   0.01099     74.92  0.00e+00 Shimmer.dB. <--- voice      
- lambda17 -0.804   0.01105    -72.77  0.00e+00 NHR <--- noice              
- lambda18  0.825   0.01093     75.49  0.00e+00 HNR <--- noice              
- lambda19  0.667   0.01225     54.43  0.00e+00 RPDE <--- cord              
- lambda20 -0.278   0.01247    -22.29 4.73e-110 DFA <--- noice              
- lambda21  0.845   0.01166     72.49  0.00e+00 PPE <--- cord               
- theta1    0.989   0.01887     52.43  0.00e+00 age <--> age                
- theta2    0.905   0.04039     22.40 4.02e-111 sex <--> sex                
- theta7    0.384   0.00807     47.51  0.00e+00 Jitter.Abs. <--> Jitter.Abs.
- theta12   0.322   0.00728     44.16  0.00e+00 Shimmer.dB. <--> Shimmer.dB.
- theta17   0.354   0.00746     47.47  0.00e+00 NHR <--> NHR                
- theta18   0.320   0.00701     45.65  0.00e+00 HNR <--> HNR                
- theta19   0.556   0.01158     47.99  0.00e+00 RPDE <--> RPDE              
- theta20   0.923   0.01708     54.03  0.00e+00 DFA <--> DFA                
- theta21   0.286   0.00991     28.88 2.04e-183 PPE <--> PPE                
- rho3      0.223   0.06229      3.58  3.48e-04 voice <--> person           
- rho4      0.205   0.05972      3.42  6.16e-04 noice <--> person           
- rho5      0.546   0.11309      4.83  1.39e-06 cord <--> person            
- rho13    -1.144   0.00551   -207.42  0.00e+00 noice <--> voice            
- rho14     1.005   0.00716    140.29  0.00e+00 cord <--> voice             
- rho15    -0.981   0.00713   -137.55  0.00e+00 cord <--> noice             
- 
- Iterations =  65
- restricted Cor matrix
- rescor <- parkinson_sem$C
-
-non-restricted Cor matrix
-nonrescor <- parkinson_sem$S
-
-differences of the elements of the observed covariance matrix and the covariance matrix of the fitted model
-covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
-
-semPaths(parkinson_sem, "est",edge.label.cex=1.5)
-
-![model_1](https://user-images.githubusercontent.com/5343403/43227123-68a68d2a-9023-11e8-9ab9-acf8e76a85a9.png)
-
-summary(parkinson_sem)
- 
-  Model Chisquare =  342   Df =  8 Pr(>Chisq) = 4.65e-69
-  Goodness-of-fit index =  0.982
-  Adjusted goodness-of-fit index =  0.952
-  SRMR =  0.0329
- 
-  Normalized Residuals
-    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-   -7.14   -0.18    0.00    0.02    0.77    4.65 
- 
-  R-square for Endogenous Variables
-   Jitter.Abs.           DFA           PPE Shimmer.APQ11           HNR 
+          lambda1   0.103   0.02382      4.33  1.47e-05 age <--- person             
+          lambda2  -0.309   0.06082     -5.08  3.85e-07 sex <--- person             
+          lambda7   0.785   0.01121     70.05  0.00e+00 Jitter.Abs. <--- voice      
+          lambda12  0.824   0.01099     74.92  0.00e+00 Shimmer.dB. <--- voice      
+          lambda17 -0.804   0.01105    -72.77  0.00e+00 NHR <--- noice              
+          lambda18  0.825   0.01093     75.49  0.00e+00 HNR <--- noice              
+          lambda19  0.667   0.01225     54.43  0.00e+00 RPDE <--- cord              
+          lambda20 -0.278   0.01247    -22.29 4.73e-110 DFA <--- noice              
+          lambda21  0.845   0.01166     72.49  0.00e+00 PPE <--- cord               
+          theta1    0.989   0.01887     52.43  0.00e+00 age <--> age                
+          theta2    0.905   0.04039     22.40 4.02e-111 sex <--> sex                
+          theta7    0.384   0.00807     47.51  0.00e+00 Jitter.Abs. <--> Jitter.Abs.
+          theta12   0.322   0.00728     44.16  0.00e+00 Shimmer.dB. <--> Shimmer.dB.
+          theta17   0.354   0.00746     47.47  0.00e+00 NHR <--> NHR                
+          theta18   0.320   0.00701     45.65  0.00e+00 HNR <--> HNR                
+          theta19   0.556   0.01158     47.99  0.00e+00 RPDE <--> RPDE              
+          theta20   0.923   0.01708     54.03  0.00e+00 DFA <--> DFA                
+          theta21   0.286   0.00991     28.88 2.04e-183 PPE <--> PPE                
+          rho3      0.223   0.06229      3.58  3.48e-04 voice <--> person           
+          rho4      0.205   0.05972      3.42  6.16e-04 noice <--> person           
+          rho5      0.546   0.11309      4.83  1.39e-06 cord <--> person            
+          rho13    -1.144   0.00551   -207.42  0.00e+00 noice <--> voice            
+          rho14     1.005   0.00716    140.29  0.00e+00 cord <--> voice             
+          rho15    -0.981   0.00713   -137.55  0.00e+00 cord <--> noice             
+          
+          Iterations =  65
+          restricted Cor matrix
+          rescor <- parkinson_sem$C
+          
+          non-restricted Cor matrix
+          nonrescor <- parkinson_sem$S
+          
+          differences of the elements of the observed covariance matrix and the covariance matrix of the fitted model
+          covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
+          
+          semPaths(parkinson_sem, "est",edge.label.cex=1.5)
+          
+          ![model_1](https://user-images.githubusercontent.com/5343403/43227123-68a68d2a-9023-11e8-9ab9-acf8e76a85a9.png)
+          
+          summary(parkinson_sem)
+          
+          Model Chisquare =  342   Df =  8 Pr(>Chisq) = 4.65e-69
+          Goodness-of-fit index =  0.982
+          Adjusted goodness-of-fit index =  0.952
+          SRMR =  0.0329
+          
+          Normalized Residuals
+     Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    -7.14   -0.18    0.00    0.02    0.77    4.65 
+    
+    R-square for Endogenous Variables
+    Jitter.Abs.           DFA           PPE Shimmer.APQ11           HNR 
          0.736         0.160         0.851         0.636         0.954 
           RPDE 
          0.448 
- 
-  Parameter Estimates
+         
+         Parameter Estimates
          Estimate Std Error z value Pr(>|z|) 
- lambda1  0.8577  0.01092     78.54  0.00e+00
- lambda2  0.3998  0.01318     30.35 2.71e-202
- lambda3  0.9223  0.01051     87.72  0.00e+00
- lambda4 -0.7978  0.01117    -71.40  0.00e+00
- lambda5  0.9770  0.00999     97.83  0.00e+00
- lambda6 -0.6694  0.01186    -56.42  0.00e+00
- corr1   -0.8357  0.00563   -148.31  0.00e+00
- theta1   0.2644  0.00726     36.41 2.85e-290
- theta2   0.8401  0.01593     52.75  0.00e+00
- theta3   0.1493  0.00671     22.24 1.29e-109
- theta4   0.3635  0.00793     45.85  0.00e+00
- theta5   0.0456  0.00596      7.64  2.19e-14
- theta6   0.5518  0.01081     51.04  0.00e+00
+         lambda1  0.8577  0.01092     78.54  0.00e+00
+         lambda2  0.3998  0.01318     30.35 2.71e-202
+         lambda3  0.9223  0.01051     87.72  0.00e+00
+         lambda4 -0.7978  0.01117    -71.40  0.00e+00
+         lambda5  0.9770  0.00999     97.83  0.00e+00
+         lambda6 -0.6694  0.01186    -56.42  0.00e+00
+         corr1   -0.8357  0.00563   -148.31  0.00e+00
+         theta1   0.2644  0.00726     36.41 2.85e-290
+         theta2   0.8401  0.01593     52.75  0.00e+00
+         theta3   0.1493  0.00671     22.24 1.29e-109
+         theta4   0.3635  0.00793     45.85  0.00e+00
+         theta5   0.0456  0.00596      7.64  2.19e-14
+         theta6   0.5518  0.01081     51.04  0.00e+00
                                          
- lambda1 Jitter.Abs. <--- frequency      
- lambda2 DFA <--- frequency              
- lambda3 PPE <--- frequency              
- lambda4 Shimmer.APQ11 <--- amplitude    
- lambda5 HNR <--- amplitude              
- lambda6 RPDE <--- amplitude             
- corr1   amplitude <--> frequency        
- theta1  Jitter.Abs. <--> Jitter.Abs.    
- theta2  DFA <--> DFA                    
- theta3  PPE <--> PPE                    
- theta4  Shimmer.APQ11 <--> Shimmer.APQ11
- theta5  HNR <--> HNR                    
- theta6  RPDE <--> RPDE                  
- 
-  Iterations =  21
- restricted Cor matrix
-rescor <- parkinson_sem$C
-
-non-restricted Cor matrix
-nonrescor <- parkinson_sem$S
-
-#differences of the elements of the observed covariance matrix and the covariance matrix of the fitted model
-covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
-
-semPaths(parkinson_sem, "est",edge.label.cex=1.5)
+         lambda1 Jitter.Abs. <--- frequency      
+         lambda2 DFA <--- frequency              
+         lambda3 PPE <--- frequency              
+         lambda4 Shimmer.APQ11 <--- amplitude    
+         lambda5 HNR <--- amplitude              
+         lambda6 RPDE <--- amplitude             
+         corr1   amplitude <--> frequency        
+         theta1  Jitter.Abs. <--> Jitter.Abs.    
+         theta2  DFA <--> DFA                    
+         theta3  PPE <--> PPE                    
+         theta4  Shimmer.APQ11 <--> Shimmer.APQ11
+         theta5  HNR <--> HNR                    
+         theta6  RPDE <--> RPDE                  
+         
+         Iterations =  21
+         restricted Cor matrix
+         rescor <- parkinson_sem$C
+         
+         non-restricted Cor matrix
+         nonrescor <- parkinson_sem$S
+         
+         differences of the elements of the observed covariance matrix and the covariance matrix of the fitted model
+         covresiduals <- round(parkinson_sem$S - parkinson_sem$C, 3)
+         
+         semPaths(parkinson_sem, "est",edge.label.cex=1.5)
 
 ![model_2](https://user-images.githubusercontent.com/5343403/43227877-a40d5e96-9025-11e8-9573-c25128f8b186.png)
 
