@@ -400,94 +400,101 @@ Next we try pca which can be a possible solution for the multi-collinearity prob
 
 parkinsons_pca_corr <- princomp(covmat = p_corr)
 summary(parkinsons_pca_corr, loadings = T)
+ 
  Importance of components:
-                        Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7
- Standard deviation      3.376  1.492 1.3134 1.2095 1.0758 1.0009 0.9112
- Proportion of Variance  0.518  0.101 0.0784 0.0665 0.0526 0.0455 0.0377
- Cumulative Proportion   0.518  0.619 0.6976 0.7641 0.8167 0.8623 0.9000
-                        Comp.8 Comp.9 Comp.10 Comp.11 Comp.12 Comp.13
- Standard deviation     0.8349  0.712  0.5402 0.45626 0.40866 0.31880
- Proportion of Variance 0.0317  0.023  0.0133 0.00946 0.00759 0.00462
- Cumulative Proportion  0.9317  0.955  0.9680 0.97742 0.98502 0.98964
-                        Comp.14 Comp.15 Comp.16  Comp.17  Comp.18  Comp.19
- Standard deviation     0.29550 0.22600 0.20713 0.143734 0.112470 0.095625
- Proportion of Variance 0.00397 0.00232 0.00195 0.000939 0.000575 0.000416
- Cumulative Proportion  0.99360 0.99593 0.99788 0.998815 0.999390 0.999805
-                         Comp.20  Comp.21  Comp.22
- Standard deviation     0.065415 7.02e-04 1.49e-04
- Proportion of Variance 0.000195 2.24e-08 1.01e-09
- Cumulative Proportion  1.000000 1.00e+00 1.00e+00
+ 
+                            Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7
+    Standard deviation      3.376  1.492 1.3134 1.2095 1.0758 1.0009 0.9112
+    Proportion of Variance  0.518  0.101 0.0784 0.0665 0.0526 0.0455 0.0377
+    Cumulative Proportion   0.518  0.619 0.6976 0.7641 0.8167 0.8623 0.9000
+                        
+                           Comp.8 Comp.9 Comp.10 Comp.11 Comp.12 Comp.13
+    Standard deviation     0.8349  0.712  0.5402 0.45626 0.40866 0.31880
+    Proportion of Variance 0.0317  0.023  0.0133 0.00946 0.00759 0.00462
+    Cumulative Proportion  0.9317  0.955  0.9680 0.97742 0.98502 0.98964
+                        
+                           Comp.14 Comp.15 Comp.16  Comp.17  Comp.18  Comp.19
+    Standard deviation     0.29550 0.22600 0.20713 0.143734 0.112470 0.095625
+    Proportion of Variance 0.00397 0.00232 0.00195 0.000939 0.000575 0.000416
+    Cumulative Proportion  0.99360 0.99593 0.99788 0.998815 0.999390 0.999805
+                         
+                            Comp.20  Comp.21  Comp.22
+    Standard deviation     0.065415 7.02e-04 1.49e-04
+    Proportion of Variance 0.000195 2.24e-08 1.01e-09
+    Cumulative Proportion  1.000000 1.00e+00 1.00e+00
  
 #### Loadings:
-               Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7 Comp.8
- subject.             -0.212        -0.334  0.649               -0.111
- age                  -0.313         0.168 -0.302        -0.845       
- sex                          0.271 -0.599  0.229        -0.353       
- test_time                                        -0.974        -0.197
- motor_UPDRS          -0.616 -0.131                       0.195  0.189
- total_UPDRS          -0.624 -0.149                       0.183  0.145
- Jitter...      0.267        -0.225 -0.190 -0.133                     
- Jitter.Abs.    0.249        -0.335                                   
- Jitter.RAP     0.259        -0.224 -0.226 -0.155                     
- Jitter.PPQ5    0.265        -0.134 -0.218 -0.145                     
- Jitter.DDP     0.259        -0.224 -0.226 -0.155                     
- Shimmer        0.276         0.246                                   
- Shimmer.dB.    0.277         0.234                                   
- Shimmer.APQ3   0.269         0.257  0.110                       0.111
- Shimmer.APQ5   0.272         0.261                                   
- Shimmer.APQ11  0.258         0.237  0.166  0.103                     
- Shimmer.DDA    0.269         0.257  0.110                       0.111
- NHR            0.257               -0.224 -0.131               -0.154
- HNR           -0.257               -0.144 -0.181                0.158
- RPDE           0.168        -0.166  0.271  0.205  0.148        -0.715
- DFA                   0.186 -0.345  0.273  0.471 -0.116 -0.217  0.523
- PPE            0.229        -0.279  0.125  0.110        -0.135       
-               Comp.9 Comp.10 Comp.11 Comp.12 Comp.13 Comp.14 Comp.15
- subject.       0.626                                                
- age            0.217                                                
- sex           -0.590                                 -0.101         
- test_time                                                           
- motor_UPDRS   -0.196                                  0.112   0.541 
- total_UPDRS   -0.114                                 -0.161  -0.561 
- Jitter...                                             0.171         
- Jitter.Abs.                  -0.227           0.472  -0.573  -0.151 
- Jitter.RAP           -0.123  -0.224                   0.158   0.183 
- Jitter.PPQ5                   0.304          -0.210   0.395  -0.416 
- Jitter.DDP           -0.123  -0.224                   0.158   0.183 
- Shimmer                                                             
- Shimmer.dB.                           0.116                         
- Shimmer.APQ3                 -0.316          -0.254  -0.100         
- Shimmer.APQ5                  0.119                          -0.228 
- Shimmer.APQ11                 0.241   0.315   0.625   0.283         
- Shimmer.DDA                  -0.316          -0.254  -0.100         
- NHR                           0.642          -0.169  -0.496   0.243 
- HNR            0.188 -0.168           0.848  -0.216  -0.119         
- RPDE          -0.233 -0.393           0.236  -0.126                 
- DFA           -0.173 -0.331   0.222          -0.109                 
- PPE           -0.147  0.792           0.235  -0.312                 
-               Comp.16 Comp.17 Comp.18 Comp.19 Comp.20 Comp.21 Comp.22
- subject.                                                             
- age                                                                  
- sex                                                                  
- test_time                                                            
- motor_UPDRS   -0.411                                                 
- total_UPDRS    0.404                                                 
- Jitter...              0.136  -0.136   0.849  -0.143                 
- Jitter.Abs.   -0.397                  -0.104                         
- Jitter.RAP     0.311           0.156  -0.206          -0.707         
- Jitter.PPQ5   -0.426          -0.224  -0.342                         
- Jitter.DDP     0.311           0.156  -0.206           0.707         
- Shimmer                0.243          -0.161  -0.858                 
- Shimmer.dB.            0.771   0.216           0.433                 
- Shimmer.APQ3          -0.186  -0.311           0.126          -0.707 
- Shimmer.APQ5  -0.149  -0.430   0.715   0.175   0.113                 
- Shimmer.APQ11  0.223  -0.165  -0.329                                 
- Shimmer.DDA           -0.186  -0.311           0.126           0.707 
- NHR            0.196  -0.120                                         
- HNR                                                                  
- RPDE                                                                 
- DFA                                                                  
- PPE
+                              Comp.1 Comp.2 Comp.3 Comp.4 Comp.5 Comp.6 Comp.7 Comp.8
+               subject.             -0.212        -0.334  0.649               -0.111
+               age                  -0.313         0.168 -0.302        -0.845       
+               sex                          0.271 -0.599  0.229        -0.353       
+               test_time                                        -0.974        -0.197
+               motor_UPDRS          -0.616 -0.131                       0.195  0.189
+               total_UPDRS          -0.624 -0.149                       0.183  0.145
+               Jitter...      0.267        -0.225 -0.190 -0.133                     
+               Jitter.Abs.    0.249        -0.335                                   
+               Jitter.RAP     0.259        -0.224 -0.226 -0.155                     
+               Jitter.PPQ5    0.265        -0.134 -0.218 -0.145                     
+               Jitter.DDP     0.259        -0.224 -0.226 -0.155                     
+               Shimmer        0.276         0.246                                   
+               Shimmer.dB.    0.277         0.234                                   
+               Shimmer.APQ3   0.269         0.257  0.110                       0.111
+               Shimmer.APQ5   0.272         0.261                                   
+               Shimmer.APQ11  0.258         0.237  0.166  0.103                     
+               Shimmer.DDA    0.269         0.257  0.110                       0.111
+               NHR            0.257               -0.224 -0.131               -0.154
+               HNR           -0.257               -0.144 -0.181                0.158
+               RPDE           0.168        -0.166  0.271  0.205  0.148        -0.715
+               DFA                   0.186 -0.345  0.273  0.471 -0.116 -0.217  0.523
+               PPE            0.229        -0.279  0.125  0.110        -0.135       
+               
+                             Comp.9 Comp.10 Comp.11 Comp.12 Comp.13 Comp.14 Comp.15
+               subject.       0.626                                                
+               age            0.217                                                
+               sex           -0.590                                 -0.101         
+               test_time                                                           
+               motor_UPDRS   -0.196                                  0.112   0.541 
+               total_UPDRS   -0.114                                 -0.161  -0.561 
+               Jitter...                                             0.171         
+               Jitter.Abs.                  -0.227           0.472  -0.573  -0.151 
+               Jitter.RAP           -0.123  -0.224                   0.158   0.183 
+               Jitter.PPQ5                   0.304          -0.210   0.395  -0.416 
+               Jitter.DDP           -0.123  -0.224                   0.158   0.183 
+               Shimmer                                                             
+               Shimmer.dB.                           0.116                         
+               Shimmer.APQ3                 -0.316          -0.254  -0.100         
+               Shimmer.APQ5                  0.119                          -0.228 
+               Shimmer.APQ11                 0.241   0.315   0.625   0.283         
+               Shimmer.DDA                  -0.316          -0.254  -0.100         
+               NHR                           0.642          -0.169  -0.496   0.243 
+               HNR            0.188 -0.168           0.848  -0.216  -0.119         
+               RPDE          -0.233 -0.393           0.236  -0.126                 
+               DFA           -0.173 -0.331   0.222          -0.109                 
+               PPE           -0.147  0.792           0.235  -0.312                 
+               
+                              Comp.16 Comp.17 Comp.18 Comp.19 Comp.20 Comp.21 Comp.22
+               subject.                                                             
+               age                                                                  
+               sex                                                                  
+               test_time                                                            
+               motor_UPDRS   -0.411                                                 
+               total_UPDRS    0.404                                                 
+               Jitter...              0.136  -0.136   0.849  -0.143                 
+               Jitter.Abs.   -0.397                  -0.104                         
+               Jitter.RAP     0.311           0.156  -0.206          -0.707         
+               Jitter.PPQ5   -0.426          -0.224  -0.342                         
+               Jitter.DDP     0.311           0.156  -0.206           0.707         
+               Shimmer                0.243          -0.161  -0.858                 
+               Shimmer.dB.            0.771   0.216           0.433                 
+               Shimmer.APQ3          -0.186  -0.311           0.126          -0.707 
+               Shimmer.APQ5  -0.149  -0.430   0.715   0.175   0.113                 
+               Shimmer.APQ11  0.223  -0.165  -0.329                                 
+               Shimmer.DDA           -0.186  -0.311           0.126           0.707 
+               NHR            0.196  -0.120                                         
+               HNR                                                                  
+               RPDE                                                                 
+               DFA                                                                  
+               PPE
 
 Below are our findins from Principal Componenets Analysis:
 
