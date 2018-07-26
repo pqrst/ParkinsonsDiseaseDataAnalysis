@@ -16,17 +16,17 @@ The data is in ASCII CSV format. The rows of the CSV file contain an instance co
 
 ### Attribute Information:
 
-Subject: Integer that uniquely identifies each subject
-Age: Subject age
-Sex: Subject gender ‘0’ - male, ‘1’ - female
-Test_time: Time since recruitment into the trial. The integer part is the number of days since recruitment
-Motor_UPDRS: Clinician’s motor UPDRS score, linearly interpolated
-Total_UPDRS: Clinician’s total UPDRS score, linearly interpolated
-Jitter (%), Jitter(Abs), Jitter. RAP, Jitter. PPQ5, Jitter. DDP: Several measures of variation in fundamental frequency (Frequency parameters)
-Shimmer, Shimmer (dB), Shimmer. APQ3, Shimmer. APQ5, Shimmer. APQ11, Shimmer. DDA: Several measures of variation in amplitude (Amplitude parameters)
-NHR, HNR: Two measures of ratio of noise to tonal components in the voice
-RPDE: A nonlinear dynamical complexity measure
-DFA: Signal fractal scaling exponent
+Subject: Integer that uniquely identifies each subject\
+Age: Subject age\
+Sex: Subject gender ‘0’ - male, ‘1’ - female\
+Test_time: Time since recruitment into the trial. The integer part is the number of days since recruitment\
+Motor_UPDRS: Clinician’s motor UPDRS score, linearly interpolated\
+Total_UPDRS: Clinician’s total UPDRS score, linearly interpolated\
+Jitter (%), Jitter(Abs), Jitter. RAP, Jitter. PPQ5, Jitter. DDP: Several measures of variation in fundamental frequency (Frequency parameters)\
+Shimmer, Shimmer (dB), Shimmer. APQ3, Shimmer. APQ5, Shimmer. APQ11, Shimmer. DDA: Several measures of variation in amplitude (Amplitude parameters)\
+NHR, HNR: Two measures of ratio of noise to tonal components in the voice\
+RPDE: A nonlinear dynamical complexity measure\
+DFA: Signal fractal scaling exponent\
 PPE: A nonlinear measure of fundamental frequency variation
 
 ## Data Cleaning and Outlier Removal:
@@ -136,12 +136,12 @@ On applying random forest we can observe that certain attributes contribute high
 
 Next we try exploratory factor analysis on the data to identify important factors.
 
-parkinson.EFA <- factanal(parkinsons[, c(2:5,8,16,18:22)], 3, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
+parkinson.EFA <- factanal(parkinsons[, c(2:5,8,16,18:22)], 3, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))\
 start 1 value: 0.261 uniqs: 0.9705 0.8226 0.9983 0.9623 0.0050 0.2976 0.0050 0.0777 0.5282 0.6720 0.2671
 
 #### parkinson.EFA
- Call:
- factanal(x = parkinsons[, c(2:5, 8, 16, 18:22)], factors = 3,     n.obs = nrow(parkinsons), rotation = "varimax", control = list(trace = T))
+ Call:\
+ factanal(x = parkinsons[, c(2:5, 8, 16, 18:22)], factors = 3,     n.obs = nrow(parkinsons), rotation = "varimax", control = list(trace = T))\
 
 #### Uniquenesses:
            age           sex     test_time   motor_UPDRS   Jitter.Abs. 
@@ -171,10 +171,10 @@ start 1 value: 0.261 uniqs: 0.9705 0.8226 0.9983 0.9623 0.0050 0.2976 0.0050 0.0
                 Proportion Var   0.299   0.103   0.088
                 Cumulative Var   0.299   0.403   0.490
  
- Test of the hypothesis that 3 factors are sufficient.
- The chi square statistic is 1506 on 25 degrees of freedom.
- The p-value is 7.7e-303
- print(parkinson.EFA$loadings, cut = 0.45)
+ Test of the hypothesis that 3 factors are sufficient.\
+ The chi square statistic is 1506 on 25 degrees of freedom.\
+ The p-value is 7.7e-303\
+ print(parkinson.EFA$loadings, cut = 0.45)\
 
  #### Loadings:
                              Factor1 Factor2 Factor3
@@ -205,13 +205,13 @@ From 3 factor analysis we can see that jitter, shimmer, NHR, HNR, RPDE and PPE h
 
 Next we try confirmatory factor analysis to compare if the results from EFA are correct.
 
-parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 2, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))
+parkinson.EFA <- factanal(parkinsons[, c(2:8,17,18:22)], 2, n.obs = nrow(parkinsons), rotation="varimax", control=list(trace=T))\
 
-start 1 value: 2.27 uniqs: 0.906 0.993 0.994 0.102 0.005 0.102 0.140 0.446 0.332 0.353 0.671 0.894 0.332
-parkinson.EFA
+start 1 value: 2.27 uniqs: 0.906 0.993 0.994 0.102 0.005 0.102 0.140 0.446 0.332 0.353 0.671 0.894 0.332\
+parkinson.EFA\
 
-Call:
- factanal(x = parkinsons[, c(2:8, 17, 18:22)], factors = 2, n.obs = nrow(parkinsons),     rotation = "varimax", control = list(trace = T))
+Call:\
+ factanal(x = parkinsons[, c(2:8, 17, 18:22)], factors = 2, n.obs = nrow(parkinsons),     rotation = "varimax", control = list(trace = T))\
  
 #### Uniquenesses:
          age         sex   test_time motor_UPDRS total_UPDRS   Jitter... 
@@ -243,9 +243,9 @@ Call:
                 Proportion Var    0.36   0.158
                 Cumulative Var    0.36   0.518
  
- Test of the hypothesis that 2 factors are sufficient.
- The chi square statistic is 13107 on 53 degrees of freedom.
- The p-value is 0
+ Test of the hypothesis that 2 factors are sufficient.\
+ The chi square statistic is 13107 on 53 degrees of freedom.\
+ The p-value is 0\
  print(parkinson.EFA$loadings, cut = 0.5)
 
 #### Loadings:
@@ -398,8 +398,8 @@ However, we know age is the most significant variable to identify if a patient h
 
 Next we try pca which can be a possible solution for the multi-collinearity problem.
 
-parkinsons_pca_corr <- princomp(covmat = p_corr)
-summary(parkinsons_pca_corr, loadings = T)
+parkinsons_pca_corr <- princomp(covmat = p_corr)\
+summary(parkinsons_pca_corr, loadings = T)\
  
  Importance of components:
  
