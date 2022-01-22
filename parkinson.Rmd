@@ -16,21 +16,87 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Description and literature:
 
-Parkinson's disease is a neurodegenerative disorder of central nervous system that causes partial or full loss of motor reflexes, speech, behavior, mental processing, and other vital functions [1]. It is generally observed in elderly people and causes disorders in speech and motor abilities (writing, balance, etc.) of 90% of the patients [2]. Ensuing Alzheimer, PD is the second common neurological health problem in elder ages and it is estimated that nearly 10 million people all around the world and approximately 100k people in Turkey are suffering from this disease [3], [4]. Particularly, PD is generally seen in one out of every hundred people aged over 65. Currently, there is no known cure for the disease [5], [6]. Although, there is significant amount of drug therapies to decrease difficulties caused by the disorder, PD is usually diagnosed and treated using invasive methods [7]. Therefore, this complicates the process of diagnosis and treatment of patients who are grieving from the disease. Our main motivation for working with this dataset is to find significant variables in identifying patients suffering from Parkinson's disease with the means of multivariate analysis. 
+Parkinson's disease is a neurodegenerative disorder of central nervous 
+system that causes partial or full loss of motor reflexes, speech, behavior, 
+mental processing, and other vital functions [1]. It is generally observed 
+in elderly people and causes disorders in speech and motor abilities 
+(writing, balance, etc.) of 90% of the patients [2]. Ensuing Alzheimer, 
+PD is the second common neurological health problem in elder ages and it is 
+estimated that nearly 10 million people all around the world and approximately 
+100k people in Turkey are suffering from this disease [3], [4]. Particularly, 
+PD is generally seen in one out of every hundred people aged over 65. Currently, 
+there is no known cure for the disease [5], [6]. Although, there is significant 
+amount of drug therapies to decrease difficulties caused by the disorder, PD is 
+usually diagnosed and treated using invasive methods [7]. Therefore, this 
+complicates the process of diagnosis and treatment of patients who are 
+grieving from the disease. Our main motivation for working with this dataset 
+is to find significant variables in identifying patients suffering from 
+Parkinson's disease with the means of multivariate analysis. 
 
-In this study, we will analyze the patients' data who are diagnosed with the disease. Using speech data from subjects is expected to help the development of a noninvasive diagnostic. There are important examples of these kinds of Alzheimer and PD studies all around the world [8]. The studies based on the PD focus on symptoms like slowness in movement, poor balance, trembling, or stiffness of some body parts but especially voice problems. The main reason behind the popularity of PD diagnosis from speech impairments is that tele-diagnosis and tele-monitoring systems based on speech signals are low in cost and easy to self-use [6], [8]. Such systems lower the inconvenience and cost of physical visits of PD patients to the medical clinic, enable the early diagnosis of the disease, and also lessen the workload of medical personnel [7], [8]. People with Parkinsonism (PWP) suffer from speech impairments like dysphonia (defective use of the voice), hypophonia (reduced volume), monotone (reduced pitch range), and dysarthria (difficulty with articulation of sounds or syllables). Even though there are many studies aiming at diagnosing and monitoring PD using these impairments, the origin of these studies leans to diagnose basic voice disorders [8]. Therefore, our analysis in this project will be based on voice parameters of the affected. The following section will illustrate a short description of the dataset formation and how we are planning to approach the problem. 
+In this study, we will analyze the patients' data who are diagnosed with the 
+disease. Using speech data from subjects is expected to help the development 
+of a noninvasive diagnostic. There are important examples of these kinds of 
+Alzheimer and PD studies all around the world [8]. The studies based on the 
+PD focus on symptoms like slowness in movement, poor balance, trembling, or 
+stiffness of some body parts but especially voice problems. The main reason 
+behind the popularity of PD diagnosis from speech impairments is that 
+tele-diagnosis and tele-monitoring systems based on speech signals are low 
+in cost and easy to self-use [6], [8]. Such systems lower the inconvenience 
+and cost of physical visits of PD patients to the medical clinic, enable the 
+early diagnosis of the disease, and also lessen the workload of medical 
+personnel [7], [8]. People with Parkinsonism (PWP) suffer from speech 
+impairments like dysphonia (defective use of the voice), hypophonia 
+(reduced volume), monotone (reduced pitch range), and dysarthria 
+(difficulty with articulation of sounds or syllables). Even though there 
+are many studies aiming at diagnosing and monitoring PD using these 
+impairments, the origin of these studies leans to diagnose basic voice 
+disorders [8]. Therefore, our analysis in this project will be based on 
+voice parameters of the affected. The following section will illustrate a 
+short description of the dataset formation and how we are planning to 
+approach the problem. 
+
+### The Importance of this Research 
+
+The most unfortunate aspect is the lack of progress & financial impact its has 
+had on families, economies & nations alike. For example, the average American 
+family estimates to pay $10,000 anually, to simply to cover basic Parkinson's 
+treatment on a regular basis [13]. But that is a droplet compared to the 
+~$52 billion America has used alone to cover Parkinson's treatment nationwide. 
+[14] And with hundreds of millions donated to Parkinson's research & development, 
+why does it seems only like private companies like Nike are the ones making
+a difference? Where researchers seems just to help improve said treatment, 
+Nike has produced actual products to aid the act of tying shoes to those 
+Parkinson's patients suffering motor disabilities most prominently in their 
+hands. Hence, it seems like it's up to private companies & the 
+public to charge for greater awareness by creating our own technology or 
+performing our own research. 
 
 ### Data:
 
-The dataset was created by Athanasios Tsanas and Max Little of the University of Oxford, in collaboration with 10 medical centers in the US and Intel Corporation who developed the tele-monitoring device to record the speech signals. The original study [9] used a range of linear and nonlinear regression methods to predict the clinician's Parkinson's disease symptom score on the UPDRS scale.
+The dataset was created by Athanasios Tsanas and Max Little of the 
+University of Oxford, in collaboration with 10 medical centers in the US 
+and Intel Corporation who developed the tele-monitoring device to record the 
+speech signals. The original study [9] used a range of linear and nonlinear 
+regression methods to predict the clinician's Parkinson's disease symptom 
+score on the UPDRS scale.
 
-This dataset is composed of a range of biomedical voice measurements from 42 people with early-stage Parkinson's disease recruited to a six-month trial of a tele-monitoring device for remote symptom progression monitoring. The recordings were automatically captured in the patient's homes.
+This dataset is composed of a range of biomedical voice measurements from 
+42 people with early-stage Parkinson's disease recruited to a six-month 
+trial of a tele-monitoring device for remote symptom progression monitoring. 
+The recordings were automatically captured in the patient's homes.
 
-Columns in the dataset contain subject number, subject age, subject gender, time interval from baseline recruitment date, motor UPDRS, total UPDRS, and 16 biomedical voice measures. Each row corresponds to one of 5,875 voice recording from these individuals. 
+Columns in the dataset contain subject number, subject age, subject gender, 
+time interval from baseline recruitment date, motor UPDRS, total UPDRS, and 
+16 biomedical voice measures. Each row corresponds to one of 5,875 voice 
+recording from these individuals. 
 
-The main aim of the data is to predict the motor and total UPDRS scores ('motor_UPDRS' and 'total_UPDRS') from the 16 voice measures.
+The main aim of the data is to predict the motor and total UPDRS scores 
+('motor_UPDRS' and 'total_UPDRS') from the 16 voice measures.
 
-The data is in ASCII CSV format. The rows of the CSV file contain an instance corresponding to one voice recording. There are around 200 recordings per patient, the subject number of the patient is identified in the first column [10], [11]. 
+The data is in ASCII CSV format. The rows of the CSV file contain an 
+instance corresponding to one voice recording. There are around 200 
+recordings per patient, the subject number of the patient is identified in 
+the first column [10], [11]. 
 
 ### Attribute Information: 
 
@@ -40,15 +106,18 @@ Age: Subject age
 
 Sex: Subject gender '0' - male, '1' - female
 
-Test_time: Time since recruitment into the trial. The integer part is the number of days since recruitment
+Test_time: Time since recruitment into the trial. 
+The integer part is the number of days since recruitment
 
 Motor_UPDRS: Clinician's motor UPDRS score, linearly interpolated
 
 Total_UPDRS: Clinician's total UPDRS score, linearly interpolated
 
-Jitter (%), Jitter(Abs), Jitter. RAP, Jitter. PPQ5, Jitter. DDP:	Several measures of variation in fundamental frequency (Frequency parameters)
+Jitter (%), Jitter(Abs), Jitter. RAP, Jitter. PPQ5, Jitter. DDP:	
+Several measures of variation in fundamental frequency (Frequency parameters)
 
-Shimmer, Shimmer (dB), Shimmer. APQ3, Shimmer. APQ5, Shimmer. APQ11, Shimmer. DDA:	Several measures of variation in amplitude (Amplitude parameters)
+Shimmer, Shimmer (dB), Shimmer. APQ3, Shimmer. APQ5, Shimmer. APQ11, Shimmer. 
+DDA:	Several measures of variation in amplitude (Amplitude parameters)
 
 NHR, HNR: Two measures of ratio of noise to tonal components in the voice
 
@@ -62,8 +131,10 @@ PPE: A nonlinear measure of fundamental frequency variation
 
 ```{r}
 #Read the data file
-parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-databases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
-#parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-multivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
+parkinsons <- read.csv("http://archive.ics.uci.edu/ml/machine-learning-dat
+abases/parkinsons/telemonitoring/parkinsons_updrs.data", header = TRUE)
+#parkinsons <- read.csv("C:\\Users\\Praveen\\Documents\\MSDS\\ISQS6350-mul
+tivariateanalysis\\project\\parkinsons_updrs.csv", header = TRUE, stringsAsFactors = TRUE)
 str(parkinsons)
 ```
 
@@ -85,11 +156,14 @@ plot(qchisq((1:nrow(x) - 1/2) / nrow(x), df = ncol(x)),
 abline(a = 0, b = 1)
 ```
 
-From the above figure, we can see that our multivariate data is not perfectly normally distributed. There may be some outliers in our data set.
+From the above figure, we can see that our multivariate data is not 
+perfectly normally distributed. There may be some outliers in our data set.
 
 # Data Cleaning and Outlier Removal:
 
-Our first step is going through the dataset and identify any missing value or outlier to take necessary measures. This step is essential to prepare the data for fruitful analysis.
+Our first step is going through the dataset and identify any missing value 
+or outlier to take necessary measures. This step is essential to prepare 
+the data for fruitful analysis.
 
 
 #### Check null values
@@ -103,7 +177,9 @@ There are no missing values in our dataset.
 #### Check correlations between the variables
 ```{r}
 library(corrplot)
-corrplot(cor(parkinsons), type="full", method ="color", title = "Parkinson correlatoin plot", mar=c(0,0,1,0), tl.cex= 0.8, outline= T, tl.col="indianred4")
+corrplot(cor(parkinsons), type="full", method ="color", title = 
+"Parkinson correlatoin plot", mar=c(0,0,1,0), tl.cex= 0.8, 
+outline= T, tl.col="indianred4")
 ```
 We can see that all the jitter variables highly correlate with Shimmer variables.
 
@@ -112,16 +188,23 @@ We can see that all the jitter variables highly correlate with Shimmer variables
 summary(parkinsons[,-3])
 ```
 
-The total_UPDRS (Unified Parkinson's Disease Ratings Score) is the main variable of interest, which determines the clinical impression of Parkinson's disease (PD) severity. Thus, we plot total_UPDRS scores against other variables in our data set to find out outliers.
+The total_UPDRS (Unified Parkinson's Disease Ratings Score) is the main 
+variable of interest, which determines the clinical impression of Parkinson's 
+disease (PD) severity. Thus, we plot total_UPDRS scores against other 
+variables in our data set to find out outliers.
 
 ```{r}
 #Scattered plot to look into data distribution
 plot(jitter(total_UPDRS)~., parkinsons)
 ```
 
-In our scattered plot between total_UPDRS and Jitter, it looks like, we can see out outlier observations in our data. Similarly, in our plots with total_UPDRS vs Shimmer, total_UPDRS vs NHR, total_UPDRS vs RPDE, total_UPDRS vs DFA, and total_UPDRS vs PPE, we can see some outlier observations.
+In our scattered plot between total_UPDRS and Jitter, it looks like, we can 
+see out outlier observations in our data. Similarly, in our plots with 
+total_UPDRS vs Shimmer, total_UPDRS vs NHR, total_UPDRS vs RPDE, total_UPDRS 
+vs DFA, and total_UPDRS vs PPE, we can see some outlier observations.
 
-We will now look into bivariate boxplots in our data to look for outlier observations in our data.
+We will now look into bivariate boxplots in our data to look for outlier 
+observations in our data.
 ```{r}
 library(MVA)
 #boxplots
@@ -137,7 +220,9 @@ bvbox(parkinsons[,c(6,21)], xlab = "total_UPDRS", ylab = "DFA")
 
 bvbox(parkinsons[,c(6,22)], xlab = "total_UPDRS", ylab = "PPE")
 ```
-The bivariate boxplot is showing a lot of our observations as outliers. Thus, we want to check our results with Convex Hull method as we don't want to change the distribution of our data by removing the outliers.
+The bivariate boxplot is showing a lot of our observations as outliers. 
+Thus, we want to check our results with Convex Hull method as we don't want 
+to change the distribution of our data by removing the outliers.
 
 ```{r}
 #Convex hull method
@@ -179,11 +264,15 @@ dim(parkinsons)
 
 # Dimensionality Reduction: 
 
-Our next step is dimensionality reduction. The dataset is very large with 22 variables and some of the variables have high correlations between them. So we are expecting to reduce the number of dimensions for better interpretation of the data. 
+Our next step is dimensionality reduction. The dataset is very large with 
+22 variables and some of the variables have high correlations between them. 
+So we are expecting to reduce the number of dimensions for better 
+interpretation of the data. 
 
 #### Multi-dimensional scaling
 
-First we try Multi-dimensional scaling which can help us visualizing the variable relationships in 2D graphs. 
+First we try Multi-dimensional scaling which can help us visualizing the 
+variable relationships in 2D graphs. 
 
 ```{r}
 #Multi dimensional scaling
@@ -567,4 +656,6 @@ http://www. parkinsondernegi.org/Icerik.aspx?Page=parkinsonnedir&ID=5
 
 [12] Max A. Little, Patrick E. McSharry, Eric J. Hunter, Lorraine O. Ramig (2009), 'Suitability of dysphonia measurements for telemonitoring of Parkinson's disease', IEEE Transactions on Biomedical Engineering, 56(4):1015-1022
 
+[13] Cobb, D. (2021), Financial options for parkinson's Care &amp; Assistive Needs. Payment Options &amp; Financial Assistance for Senior Care. Online link: https://www.payingforseniorcare.com/parkinsons/financial-assistance 
 
+[14] Yang, W., Hamilton, J. L., Kopil, C., Beck, J. C., Tanner, C. M., Albin, R. L., Ray Dorsey, E., Dahodwala, N., Cintina, I., Hogan, P., &amp; Thompson, T. (2020). Current and projected future economic burden of parkinson's disease in the U.S. Nature News. Online link: https://www.nature.com/articles/s41531-020-0117-1 
